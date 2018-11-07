@@ -1,0 +1,109 @@
+@message-prefix-cls     : my-message;
+@icon-prefix-cls        : ivu-icon;
+@font-size-base         : 14px;
+@zindex-message         : 1010;
+@zindex-notification    : 1010;
+@animation-time         : .3s;
+@transition-time        : .2s;
+@ease-in-out            : ease-in-out;
+@legend-color           : #999;
+@border-radius-small    : 4px;
+@shadow-color           : rgba(0, 0, 0, .2);
+@shadow-base            : 0 1px 6px @shadow-color;
+@primary-color          : #2d8cf0;
+@info-color             : #2db7f5;
+@success-color          : #19be6b;
+@processing-color       : @primary-color;
+@warning-color          : #ff9900;
+@error-color            : #ed4014;
+@normal-color           : #e6ebf1;
+@font-size-large        : 16px;
+
+.close-base(@top: 0, @icon-font-size: 22px) {
+    font-size: @icon-font-size;
+    color: @legend-color;
+    transition: color @transition-time ease;
+    position: relative;
+    top: @top;
+    &:hover {
+        color: #444;
+    }
+}
+
+.@{message-prefix-cls} {
+    font-size: @font-size-base;
+    position: fixed;
+    z-index: @zindex-message;
+    top: 16px;
+    pointer-events: none;
+
+    &-notice {
+        padding: 8px;
+        text-align: center;
+        transition: height @animation-time @ease-in-out, padding @animation-time @ease-in-out;
+
+        &:first-child {
+          margin-top: -8px;
+        }
+
+        &-close {
+            position: absolute;
+            right: 4px;
+            top: 10px;
+            color: #999;
+            outline: none;
+
+            i.@{icon-prefix-cls}{
+                .close-base(-3px);
+            }
+        }
+    }
+
+    &-notice-content {
+        display: inline-block;
+        pointer-events: all;
+        padding: 8px 16px;
+        //border: 1px solid @border-color-split;
+        border-radius: @border-radius-small;
+        box-shadow: @shadow-base;
+        background: #fff;
+        position: relative;
+        &-text{
+            display: inline-block;
+        }
+    }
+
+    &-notice-closable{
+        .@{message-prefix-cls}-notice-content-text{
+            padding-right: 32px;
+        }
+    }
+
+    &-success .@{icon-prefix-cls} {
+        color: @success-color;
+    }
+
+    &-error .@{icon-prefix-cls} {
+        color: @error-color;
+    }
+
+    &-warning .@{icon-prefix-cls} {
+        color: @warning-color;
+    }
+
+    &-info .@{icon-prefix-cls},
+    &-loading .@{icon-prefix-cls} {
+        color: @primary-color;
+    }
+
+    .@{icon-prefix-cls} {
+        margin-right: 4px;
+        font-size: @font-size-large;
+        vertical-align: middle;
+    }
+    &-custom-content{
+        span{
+            vertical-align: middle;
+        }
+    }
+}
