@@ -17,35 +17,58 @@ import Main from '@/view/layout'
  */
 
 export default [
-  {
-    path: '/login',
-    name: 'login',
-    meta: {
-        title: 'Login - 登录',
-        hideInMenu: true,
-    },
-    component: () => import('@/view/login/login.vue')
-  },
-  {
-    path: '/',
-    name: 'layouts',
-    component: Main,
-    meta: {
-        hideInMenu: true,
-        notCache: true
-    },
-    children: [
-      {
-        path: '/',
-        name: 'home',
+    {
+        path: '/login',
+        name: 'login',
         meta: {
+            title: 'Login - 登录',
             hideInMenu: true,
-            title: '首页',
-            notCache: true,
-            icon: 'md-home'
         },
-        component: () => import('@/view/home')
-      }
-    ]
-  }
+        component: () => import('@/view/login/login.vue')
+    },
+    {
+        path: '/',
+        name: 'layouts',
+        component: Main,
+        meta: {
+            hideInMenu: false,
+            notCache: true,
+        },
+        children: [
+            {
+                path: '/',
+                name: 'home',
+                meta: {
+                    hideInMenu: false,
+                    title: '首页',
+                    notCache: true,
+                    icon: 'md-home'
+                },
+                component: () => import('@/view/home')
+            }
+        ]
+    },
+    {
+        path: '/user',
+        name: '用户模块',
+        component: Main,
+        meta: {
+            hideInMenu: false,
+            notCache: true,
+        },
+        children: [
+            {
+                path: '/index',
+                name: '管理员',
+                meta: {
+                    hideInMenu: false,
+                    title: '首页',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/user/index')
+            }
+        ]
+    }
+
 ]

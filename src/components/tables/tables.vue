@@ -269,6 +269,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.searchable)
     this.handleColumns(this.columns)
     this.setDefaultSearchKey()
     this.handleTableData()
