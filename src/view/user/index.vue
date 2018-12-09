@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <Searchable :cansearch='true' :handleSearchFunc="sfunc" :searchField='searchField'></Searchable>
-        <Tables border :columns="columns5" :data="data5"></Tables>
+    <div style="background:white;margin:2px;padding:20px;border-radius: 10px;">
+        <Searchable :cansearch='true' :searchField='searchField' @listenSearchData='getSearchData'></Searchable>
+        <Tables border :columns="table_title" :data="table_data"></Tables>
     </div>
 </template>
 <script>
@@ -16,12 +16,11 @@
         data () {
             return {
                 searchable:true,
-                columns5: [
+                table_title: [
                     {
                         title: 'Date',
                         key: 'date',
-                        sortable: true,
-                        searchable:true,
+                        sortable: true
                     },
                     {
                         title: 'Name',
@@ -31,14 +30,13 @@
                         title: 'Age',
                         key: 'age',
                         sortable: true,
-                        searchable:true,
                     },
                     {
                         title: 'Address',
                         key: 'address'
                     }
                 ],
-                data5: [
+                table_data: [
                     {
                         name: 'John Brown',
                         age: 18,
@@ -64,53 +62,40 @@
                         date: '2016-10-04'
                     }
                 ],
-                sfunc:function () {console.log(1)},
                 searchField: [
                     [
                         {
                             key:'name',
-                            span:10,
                             type:'text',
                             placeholder:'姓名',
                             name:'姓名',
                         },
                         {
                             key:'jack',
-                            span:5,
-                            type:'text',
+                            type:'select',
+                            fields:{0:'请选择',1:'name',2:'jackssdfsdfsddsss'},
                             placeholder:'姓名',
                             name:'姓名sfds',
                         },
                         {
-                            key:'jack',
-                            span:5,
-                            type:'text',
+                            key:'date',
+                            type:'date',
                             placeholder:'姓名',
                             name:'姓名sfds',
                         },
                         {
-                            key:'jack',
-                            span:5,
-                            type:'text',
+                            key:'jack2',
+                            type:'date_range',
                             placeholder:'姓名',
                             name:'姓名sfds',
-                        },
-                        // {
-                        //     key:'fee',
-                        //     span:5,
-                        //     type:'text',
-                        //     placeholder:'姓名',
-                        //     name:'姓名',
-                        // },
-                        // {
-                        //     key:'aa',
-                        //     span:5,
-                        //     type:'text',
-                        //     placeholder:'姓名',
-                        //     name:'姓名',
-                        // }
+                        }
                     ]
                 ]
+            }
+        },
+        methods:{
+            getSearchData(data){
+                console.log(data);
             }
         }
         
