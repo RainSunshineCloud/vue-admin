@@ -62,11 +62,33 @@ export default [
                 name: '管理员',
                 meta: {
                     hideInMenu: false,
-                    title: '首页',
+                    title: '管理员',
                     notCache: true,
                     icon: 'md-people'
                 },
                 component: () => import('@/view/user/index')
+            }
+        ]
+    },
+    {
+        path: '/article',
+        name: '文章模块',
+        component: Main,
+        meta: {
+            hideInMenu: false,
+            notCache: true,
+        },
+        children: [
+            {
+                path: '/index',
+                name: '文章列表',
+                meta: {
+                    hideInMenu: false,
+                    title: '文章',
+                    notCache: true,
+                    icon: 'md-article'
+                },
+                component: () => import('@/view/article/index')
             }
         ]
     }

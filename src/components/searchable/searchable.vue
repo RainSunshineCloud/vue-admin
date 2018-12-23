@@ -73,12 +73,19 @@
                         tmp[key].push({resetbtn:false,type:'btn'});
                     }
                 });
-                console.log(tmp)
                 return tmp;
             }
         },
         methods:{
             getSearchData(){
+                let tmp_data = this.getData();
+                this.$emit('listenSearchData',tmp_data);
+            },
+            resetData(){
+                let tmp_data = this.getData();
+                this.$emit('listenResetData',tmp_data);
+            },
+            getData() {
                 let tmp_data = {};
                 this.searchField.forEach((value,key)=>{
                     value.forEach((v,k) => {
@@ -98,11 +105,7 @@
                         }
                     });
                 });
-                this.$emit('listenSearchData',tmp_data);
-            },
-            resetData(){
-                this.searchData = {};
-                this.getSearchData();
+                return tmp_data;
             }
         }
     }

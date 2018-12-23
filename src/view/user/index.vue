@@ -1,26 +1,31 @@
 <template>
-    <div style="background:white;margin:2px;padding:20px;border-radius: 10px;">
-        <Searchable :cansearch='true' :searchField='searchField' @listenSearchData='getSearchData'></Searchable>
-        <Tables border :columns="table_title" :data="table_data"></Tables>
-    </div>
+    <Tables border 
+        :columns="table_title" 
+        :data="table_data" 
+        :searchField="searchField"
+        :loading="loading"
+        :total = 'total'
+        :pageSize = 'pageSize'
+        @listenFormData='getSearchData'
+        @listenResetFormData = "getResetData"
+        >
+    </Tables>
 </template>
 <script>
-	import Tables from '@/components/tables'
-    import Searchable from '@/components/searchable'
+    
+    import Tables from '@/components/tables'
     export default {
-        name: 'user',
+        name: 'user_index',
         components: {
-            Tables,
-            Searchable,
+            Tables
         },
         data () {
             return {
-                searchable:true,
                 table_title: [
                     {
                         title: 'Date',
                         key: 'date',
-                        sortable: true
+                        sortable: 'custom'
                     },
                     {
                         title: 'Name',
@@ -29,39 +34,14 @@
                     {
                         title: 'Age',
                         key: 'age',
-                        sortable: true,
+                        sortable: 'custom',
                     },
                     {
                         title: 'Address',
                         key: 'address'
                     }
                 ],
-                table_data: [
-                    {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03'
-                    },
-                    {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01'
-                    },
-                    {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
-                    },
-                    {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04'
-                    }
-                ],
+                table_data: [],
                 searchField: [
                     [
                         {
@@ -90,12 +70,44 @@
                             name:'姓名sfds',
                         }
                     ]
-                ]
+                ],
+                loading:false,
+                total: 100,
+                pageSize:20,
             }
         },
         methods:{
             getSearchData(data){
-                console.log(data);
+                this.loading = true;
+                this.table_data = [
+                    {
+                        name: 'John Brown',
+                        age: 18,
+                        address: 'New York No. 1 Lake Park',
+                        date: '2016-10-03'
+                    },
+                    {
+                        name: 'Jim Green',
+                        age: 24,
+                        address: 'London No. 1 Lake Park',
+                        date: '2016-10-01'
+                    },
+                    {
+                        name: 'Joe Black',
+                        age: 30,
+                        address: 'Sydney No. 1 Lake Park',
+                        date: '2016-10-02'
+                    },
+                    {
+                        name: 'Jon Snow',
+                        age: 26,
+                        address: 'Ottawa No. 2 Lake Park',
+                        date: '2016-10-04'
+                    }
+                ],
+                this.loading = false;
+            },
+            getResetData(data){
             }
         }
         
