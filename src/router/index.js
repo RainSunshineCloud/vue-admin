@@ -58,7 +58,7 @@ export default [
         },
         children: [
             {
-                path: '/index',
+                path: '/user_index',
                 name: '管理员',
                 meta: {
                     hideInMenu: false,
@@ -75,20 +75,27 @@ export default [
         name: '文章模块',
         component: Main,
         meta: {
-            hideInMenu: false,
             notCache: true,
+            title: '文章模块',
         },
         children: [
             {
-                path: '/index',
-                name: '文章列表',
+                path: '/article_index',
+                name: 'markdown编辑器',
                 meta: {
-                    hideInMenu: false,
-                    title: '文章',
-                    notCache: true,
+                    title: 'markdown编辑器',
                     icon: 'md-article'
                 },
-                component: () => import('@/view/article/index')
+                component: () => import('@/view/article/edit')
+            },
+            {
+                path: '/article_tinymce',
+                name: '富文本编辑器',
+                meta: {
+                    title: '富文本编辑器',
+                    icon: 'md-article'
+                },
+                component: () => import('@/view/article/tinymce')
             }
         ]
     }

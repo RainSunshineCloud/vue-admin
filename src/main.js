@@ -11,8 +11,15 @@ import http from '@/libs/http.js'
 import 'iview/dist/styles/iview.css'
 import './index.less'
 import '@/assets/icons/iconfont.css'
+// import 'iview/dist/fonts/ionicons.svg'
+// import 'iview/dist/fonts/ionicons.ttf'
+// import 'iview/dist/fonts/ionicons.woff'
+import VueClipboard from 'vue-clipboard2'
+
 
 Vue.use(VueRouter)
+Vue.use(VueClipboard)
+
 const router = new VueRouter({
     routes 
 })
