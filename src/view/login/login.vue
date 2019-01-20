@@ -16,15 +16,16 @@
 
 <script>
 import LoginForm from '@/components/login-form'
+import logins from '@/api/login.js'
 export default {
     components: {
         LoginForm
     },
     methods: {
         login_handle ({ moble, password }) {
-            this.$http.post('/passport/login',{ moble, 'login_pwd':password }).then(res => {
-                
-            }).catch(function(err) {})
+            logins.post('passport/login',{ moble, 'login_pwd':password }).then(res => {
+                console.log(res);
+            });
         }
     }
 }

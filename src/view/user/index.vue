@@ -14,6 +14,7 @@
 <script>
     
     import Tables from '@/components/tables'
+    import api from '@/api/api.js'
     export default {
         name: 'user_index',
         components: {
@@ -79,6 +80,9 @@
         methods:{
             getSearchData(data){
                 this.loading = true;
+
+                api.get('test/input.php').then(function (error) {
+                });
                 this.table_data = [
                     {
                         name: 'John Brown',
