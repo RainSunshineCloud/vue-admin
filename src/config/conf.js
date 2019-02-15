@@ -12,14 +12,14 @@ export default {
     useI18n: true,
 
     devApiConfig: {
-        baseURL: 'http://vm.test.com/git',
+        baseURL: 'http://vm.tests01.com/admin',
         timeout: 100000,
         withCredentials: false,
         // adapter: function (config){console.log(config);},
         responseType: 'json',
     },
     proApiConfig : {
-        baseURL: 'https://produce.com',
+        baseURL: 'http://vm.tests01.com/admin',
         timeout: 3000,
         withCredentials: false,
         responseType: 'json',

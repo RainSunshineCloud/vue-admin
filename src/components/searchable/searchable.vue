@@ -83,12 +83,14 @@
             },
             resetData(){
                 let tmp_data = this.getData();
+                console.log(tmp_data);
                 this.$emit('listenResetData',tmp_data);
             },
             getData() {
                 let tmp_data = {};
                 this.searchField.forEach((value,key)=>{
                     value.forEach((v,k) => {
+
                         if (!this.searchData[v.key]) {
                             if (v.type == 'text') tmp_data[v.key] = '';
                             else if (v.type == 'date_range') tmp_data[v.key] = ['',''];
@@ -101,6 +103,8 @@
                                 tmp_data[v.key][1] = this.searchData[v.key][1].valueOf() /1000;
                             }else if (v.type == 'date') {
                                 tmp_data[v.key] = this.searchData[v.key].valueOf() / 1000;
+                            } else {
+                                 tmp_data[v.key] = this.searchData[v.key]
                             }
                         }
                     });

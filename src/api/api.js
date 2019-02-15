@@ -1,42 +1,45 @@
 import HttpRequest from '@/libs/axios'
 import config from '@/config'
+import {getToken} from '@/libs/util'
 
 class Api
 {
-	constructor () {
+    constructor () {
         let config_all = Object.assign({},config.apiConf,this.configs());
-		return new HttpRequest(config_all,this.commonThen,this.commonCatch,this.middles());
-	}
+        return new HttpRequest(config_all,this.commonThen,this.commonCatch,this.middles());
+    }
 
     configs () {
         return {
-            'Token': 1,
+            headers: {
+                'token': getToken(),
+            }
+           
         }
     }
-	commonThen (req) {
-  		if (false) {
-  			return Promise.resolve({status:1,req});
-  		} else {
-  			return Promise.reject(req);
-  		}	
-  	}
+    commonThen (req) {
+        if (req.data.code) {
+            return Promise.resolve({status:1,req});
+        } else {
+            return Promise.reject(req);
+        }   
+    }
 
-  	commonCatch (error) {
-  		return {
-  			then: () => {
-  			   
-  		    }
+    commonCatch (error) {
+        return {
+            then: () => {
+               
+            }
         }
-  	}
+    }
 
-  	middles () {
-  		return {
-	    	req:{success:[],error:[]},
-	    	res:{success:[this.cookieMiddle],error:[]},
-	    }
-  	}
+    middles () {
+        return {
+            req:{success:[],error:[]},
+            res:{success:[this.cookieMiddle],error:[]},
+        }
+    }
     cookieMiddle (){
-        console.log(1);
     }
 }
 let api = new Api();

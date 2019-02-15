@@ -71,33 +71,67 @@ export default [
         ]
     },
     {
-        path: '/article',
-        name: '文章模块',
+        path: '/api',
+        name: '接口管理',
         component: Main,
         meta: {
+            hideInMenu: false,
+             title: '接口管理',
             notCache: true,
-            title: '文章模块',
         },
         children: [
             {
-                path: '/article_index',
-                name: 'markdown编辑器',
+                path: '/api_index',
+                name: '接口配置',
                 meta: {
-                    title: 'markdown编辑器',
-                    icon: 'md-article'
+                    hideInMenu: false,
+                    title: '接口配置',
+                    notCache: true,
+                    icon: 'md-people'
                 },
-                component: () => import('@/view/article/edit')
+                component: () => import('@/view/api/index.vue')
             },
             {
-                path: '/article_tinymce',
-                name: '富文本编辑器',
+                path: '/api_user',
+                name: '计划人员',
                 meta: {
-                    title: '富文本编辑器',
-                    icon: 'md-article'
+                    hideInMenu: false,
+                    title: '计划人员',
+                    notCache: true,
+                    icon: 'md-people'
                 },
-                component: () => import('@/view/article/tinymce')
+                component: () => import('@/view/api/user.vue')
             }
         ]
-    }
+    },
+    // {
+    //     path: '/article',
+    //     name: '文章模块',
+    //     component: Main,
+    //     meta: {
+    //         notCache: true,
+    //         title: '文章模块',
+    //     },
+    //     children: [
+    //         {
+    //             path: '/article_index',
+    //             name: 'markdown编辑器',
+    //             meta: {
+    //                 title: 'markdown编辑器',
+    //                 icon: 'md-article'
+    //             },
+    //             component: () => import('@/view/article/edit')
+    //         },
+    //         {
+    //             path: '/article_tinymce',
+    //             name: '富文本编辑器',
+    //             meta: {
+    //                 title: '富文本编辑器',
+    //                 icon: 'md-article'
+    //             },
+    //             component: () => import('@/view/article/tinymce')
+    //         }
+    //     ]
+    // }
 
 ]

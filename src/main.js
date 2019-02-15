@@ -13,7 +13,6 @@ import '@/assets/icons/iconfont.css'
 import {getToken} from '@/libs/util.js'
 import VueClipboard from 'vue-clipboard2'
 
-
 Vue.use(VueRouter)
 Vue.use(VueClipboard)
 

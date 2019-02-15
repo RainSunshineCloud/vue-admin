@@ -24,51 +24,48 @@
             return {
                 table_title: [
                     {
-                        title: 'Date',
-                        key: 'date',
-                        sortable: 'custom'
+                        title: 'ID',
+                        key: 'id',
                     },
                     {
-                        title: 'Name',
-                        key: 'name'
+                        title: '名称',
+                        key: 'name',
                     },
                     {
-                        title: 'Age',
-                        key: 'age',
-                        sortable: 'custom',
+                        title: '开始时间',
+                        key: 'start_time'
                     },
                     {
-                        title: 'Address',
-                        key: 'address'
+                        title: '结束时间',
+                        key: 'end_time',
+                    },
+                    {
+                        title: '间隔',
+                        key: 'gap'
+                    },
+                    {
+                        title: '接口',
+                        key: 'url'
+                    },
+                    {
+                        title: '标志',
+                        key: 'flag'
+                    },
+                    {
+                        title: '最大期数',
+                        key: 'max_num'
                     }
                 ],
                 table_data: [],
                 searchField: [
                     [
+
                         {
                             key:'name',
-                            type:'text',
+                            type:'select',
+                            fields:{0:'请选择',1:'江苏',2:'湖北',3:'吉林',4:'河北',5:'甘肃',6:'上海'},
                             placeholder:'姓名',
                             name:'姓名',
-                        },
-                        {
-                            key:'jack',
-                            type:'select',
-                            fields:{0:'请选择',1:'name',2:'jackssdfsdfsddsss'},
-                            placeholder:'姓名',
-                            name:'姓名sfds',
-                        },
-                        {
-                            key:'date',
-                            type:'date',
-                            placeholder:'姓名',
-                            name:'姓名sfds',
-                        },
-                        {
-                            key:'jack2',
-                            type:'date_range',
-                            placeholder:'姓名',
-                            name:'姓名sfds',
                         }
                     ]
                 ],
@@ -78,41 +75,21 @@
             }
         },
         methods:{
-            getSearchData(data){
+            getSearchData(data) {
                 this.loading = true;
-
-                api.get('test/input.php').then(function (error) {
+                api.get('api/getConfig',data).then((data) => {
+                    this.table_data = data.req.data.data.list;
+                    this.pageSize = data.req.data.data.pageSize;
+                    this.total = data.req.data.data.total;
                 });
-                this.table_data = [
-                    {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03'
-                    },
-                    {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01'
-                    },
-                    {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
-                    },
-                    {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04'
-                    }
-                ],
+
                 this.loading = false;
             },
             getResetData(data){
             }
+        },
+        mounted () {
+            this.getSearchData();
         }
         
     }
