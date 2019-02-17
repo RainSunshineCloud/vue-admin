@@ -24,7 +24,7 @@ export default {
     methods: {
         login_handle ({ moble, password }) {
             logins.post('passport/login',{ moble, 'login_pwd':password }).then(res => {
-                this.$router.push('/');
+                this.$router.push('/api_index');
             });
         }
     }

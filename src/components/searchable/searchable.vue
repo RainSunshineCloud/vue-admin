@@ -82,8 +82,8 @@
                 this.$emit('listenSearchData',tmp_data);
             },
             resetData(){
+                this.searchData = {};
                 let tmp_data = this.getData();
-                console.log(tmp_data);
                 this.$emit('listenResetData',tmp_data);
             },
             getData() {

@@ -12,14 +12,14 @@ export default {
     useI18n: true,
 
     devApiConfig: {
-        baseURL: 'http://vm.tests01.com/admin',
+        baseURL: 'http://www.foxconn.com/admin',
         timeout: 100000,
         withCredentials: false,
         // adapter: function (config){console.log(config);},
         responseType: 'json',
     },
     proApiConfig : {
-        baseURL: 'http://vm.tests01.com/admin',
+        baseURL: 'http://www.foxconn.com/admin',
         timeout: 3000,
         withCredentials: false,
         responseType: 'json',
@@ -27,5 +27,5 @@ export default {
     /**
     * @description 默认打开的首页的路由name值，默认为home
     */
-    homeName: 'home',
+    homeName: '接口配置',
 }

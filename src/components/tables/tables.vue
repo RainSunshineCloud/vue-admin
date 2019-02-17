@@ -13,12 +13,11 @@
             :loading="loading"
             @on-sort-change="sort"
         >
-
         </Table>
         <template>
             <Row justify="end" type="flex" style="padding-top: 8px">
                 <Col>
-                    <Page :total="total" :page-size="pageSize" show-total @on-change="pageChange"/>
+                    <Page :total="total" :page-size="pageSize" :current="FormData.page" show-total @on-change="pageChange"/>
                 </Col>
             </Row>
         </template>
@@ -66,10 +65,10 @@ export default {
         return {
             searchValue: '',
             FormData: {
-                "sort":"",
-                "search":"",
-                "page" : "",
-                "pageSize":"",
+                "sort":undefined,
+                "search":undefined,
+                "page" : 1,
+                "pageSize":10,
             },
         }
     },
@@ -84,7 +83,7 @@ export default {
             this.$emit('listenFormData',this.FormData);
         },
         getSearchData(data) {
-            this.FormData.search = data;
+            this.FormData.search = this.rebuildData(data);
             this.$emit('listenFormData',this.FormData);
         },
         pageChange(page) {
@@ -92,8 +91,22 @@ export default {
             this.$emit('listenFormData',this.FormData);
         },
         getResetData(data) {
-            this.FormData.search = data;
-            this.$emit('listenResetFormData',this.FormData);
+            this.FormData.page = 1;
+            this.FormData.search = this.rebuildData(data);
+            this.pageChange(1);
+        },
+        rebuildData(data) {
+            for (let key in data) {
+
+                if (data[key] == '' || data[key] == ["",""]) {
+                     delete data[key];
+                }
+            }
+
+            if (JSON.stringify(data) == '{}') {
+                data = undefined;
+            }
+            return data;
         }
     },
     mounted () {

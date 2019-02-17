@@ -1,82 +1,117 @@
 <template>
     <div>
-    <Tables border 
-        :columns="table_title" 
-        :data="table_data" 
-        :searchField="searchField"
-        :loading="loading"
-        :total = 'total'
-        :pageSize = 'pageSize'
-        @listenFormData='getSearchData'
-        @listenResetFormData = "getResetData"
-        >
-    </Tables>
+        <Button type="primary" @click="openAddModal">添加</Button>
+        <Tables border 
+            :columns="table_title" 
+            :data="table_data" 
+            :searchField="searchField"
+            :loading="loading"
+            :total = 'total'
+            :pageSize = 'pageSize'
+            @listenFormData='getSearchData'
+            @listenResetFormData = "getResetData"
+            >
+        </Tables>
 
-     <Modal v-model="modifyModify.openModify" width="660" @on-cancel="resetChargeCoin(true)">
+        <Modal v-model="modifyModal.open" width="660" @on-cancel="reset(1)">
             <p slot="header">
                 <span>修改</span>
             </p>
             <div style="text-align:center">
-                <Form ref="modifyModify.formData" :model="modifyModify.formData" :label-width="80">
+                <Form ref="modifyModal.formData" :model="modifyModal.formData" :label-width="80">
                     <FormItem label="ID">
-                        <Input type="text" :readonly="true" v-model="modifyModify.formData.id"></Input>
+                        <Input type="text" :readonly="true" v-model="modifyModal.formData.id"></Input>
                     </FormItem>
                     <FormItem label="名称">
-                        <Input type="text" v-model="modifyModify.formData.nickname"></Input>
+                        <Input type="text" v-model="modifyModal.formData.nickname"></Input>
                     </FormItem>
                     <FormItem label="头像">
-                        <Input type="text" v-model="modifyModify.formData.header"></Input>
+                        <MyUpload :pics="[modifyModal.formData.header]" @listenFileUpload="uploadFile" :flag= "1" @listenFileRemove="removeFile(1)"></MyUpload>
                     </FormItem>
                     <FormItem label="类型" prop="type">
-                        <Select v-model="modifyModify.formData.type">
-                            <Option value="1">民间高手</Option>
-                            <Option value="2">业内专家</Option>
-                        </Select>
-                    </FormItem>
-                     <FormItem label="接口名" prop="flag">
-                        <Select  v-model="modifyModify.formData.flag">
-                            <Option value="1">江苏</Option>
-                            <Option value="2">湖北</Option>
-                            <Option value="3">吉林</Option>
-                            <Option value="4">河北</Option>
-                            <Option value="5">甘肃</Option>
-                            <Option value="6">上海</Option>
+                        <Select v-model="modifyModal.formData.type">
+                            <Option value=1>民间高手</Option>
+                            <Option value=2>业内专家</Option>
                         </Select>
                     </FormItem>
                 </Form>
             </div>
             <div slot="footer">
                 <Button type="primary" @click="modify" :disabled="loading">修改</Button>
-                <Button type="default" @click="reset" style="margin-left: 8px" :disabled="loading">返回</Button>
+                <Button type="default" @click="reset(1)" style="margin-left: 8px" :disabled="loading">返回</Button>
             </div>
         </Modal>
-        </div>
+
+        <Modal v-model="addModal.open" width="660" @on-cancel="reset(2)">
+            <p slot="header"> <span>添加</span></p>
+
+            <div style="text-align:center">
+                <Form ref="addModal.formData" :model="addModal.formData" :label-width="80">
+                    <FormItem label="名称">
+                        <Input type="text" v-model="addModal.formData.nickname"></Input>
+                    </FormItem>
+                    <FormItem label="头像">
+                        <MyUpload :pics="[addModal.formData.header]" :flag= "2" @listenFileUpload="uploadFile" @listenFileRemove="removeFile(2)"></MyUpload>
+                    </FormItem>
+                    <FormItem label="类型" prop="type">
+                        <Select v-model="addModal.formData.type">
+                            <Option value=1>民间高手</Option>
+                            <Option value=2>业内专家</Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem label="接口名" prop="flag">
+                        <Select v-model="addModal.formData.flag">
+                            <template v-for="(val,key) in searchField[0][0].fields">
+                                <Option :value="key">{{val}}</Option>
+                            </template>
+                        </Select>
+                    </FormItem>
+                </Form>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="add" :disabled="loading">添加</Button>
+                <Button type="default" @click="reset(2)" style="margin-left: 8px" :disabled="loading">返回</Button>
+            </div>
+        </Modal>
+    </div>
 </template>
 <script>
     
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
+    import MyUpload from '@/components/my-upload'
+    import {removeFiles,uploadFiles,resets,modifys,adds} from '@/libs/methods.js'
     export default {
         name: 'api_user',
         components: {
-            Tables
+            Tables,
+            MyUpload
         },
         data () {
             return {
-                modifyModify:{
-                    openModify: false,
+                pics:[],
+                modifyModal:{
+                    open: false,
                     formData:{
                     },
                 },
-                ruleCharge:{},
+                addModal:{
+                    open: false,
+                    formData:{
+                    },
+                },
                 table_title: [
                     {
                         title: 'ID',
                         key: 'id',
+                        width:70,
+                        align:'center',
                     },
                     {
                         title: '名称',
                         key: 'nickname',
+                        width:90,
+                        align:'center',
                     },
                     {
                         title: '头像',
@@ -85,10 +120,14 @@
                     {
                         title: '接口名',
                         key: 'name',
+                        width:80,
+                        align:'center',
                     },
                     {
                         title: '类型',
                         key: 'type',
+                        width:100,
+                        align:'center',
                         render: (h, params) => {
                                 return h('div', this.getType(params.row.type));
                         }
@@ -96,6 +135,8 @@
                     {
                         title: '操作',
                         key: 'oparate',
+                        width:100,
+                        align:'center',
                         render: (h, params) => {
                             return h('div', [
                                 h('Button', {
@@ -107,7 +148,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.modifyModal(params.row);
+                                            this.openModifyModal(params.row);
                                         }
                                     }
                                 }, '修改')
@@ -121,7 +162,7 @@
                         {
                             key:'flag',
                             type:'select',
-                            fields:{0:'请选择',1:'江苏',2:'湖北',3:'吉林',4:'河北',5:'甘肃',6:'上海'},
+                            fields:{'1':'江苏','2':'湖北','3':'吉林','4':'河北','5':'甘肃','6':'上海'},
                             placeholder:'姓名',
                             name:'接口名',
                         }
@@ -129,7 +170,7 @@
                 ],
                 loading:false,
                 total: 100,
-                pageSize:20,
+                pageSize:10,
             }
         },
         methods:{
@@ -137,11 +178,13 @@
                 this.loading = true;
                 api.get('api/getPlanUser',data).then((data) => {
                     this.table_data = data.req.data.data.list;
-                    this.pageSize = data.req.data.data.pageSize;
                     this.total = data.req.data.data.total;
                 });
 
                 this.loading = false;
+            },
+            getResetData(data) {
+                this.getSearchData(data);
             },
             getType(type) {
                 switch (type) {
@@ -151,32 +194,36 @@
                         return '业内专家';
                 }
             },
-            modifyModal(data) {
-                this.modifyModify.openModify = true;
-                this.modifyModify.formData = {
+
+            //打开模态
+            openModifyModal(data) {
+                this.modifyModal.open = true;
+                this.modifyModal.formData = {
                     id: data.id,
                     nickname: data.nickname,
                     header: data.header,
-                    type: data.type,
-                    flag: data.flag
+                    type: '' + data.type,
                 };
             },
-            modify () {
-                api.post('api/modifyPlanUser',this.modifyModify.formData).then((data) => {
-                   this.modifyModify.openModify = false;
-                   this.getSearchData();
-                });
+            openAddModal() {
+                this.addModal.open = true;
+                this.addModal.formData = {
+                    header:'',
+                    nickname: '',
+                    type: '',
+                    flag:'',
+                };
             },
-            reset (data) {
-                this.modifyModify.openModify = false;
-                this.modifyModify.formData = {};
-            },
-
-            getResetData(data) {
-            }
+            modify () {modifys('api/modifyPlanUser',this);},
+            add() { adds('api/addPlanUser',this);},
+            reset(flag) {resets(flag,this);},
+            //文件上传
+            uploadFile (param,flag) { uploadFiles(param,flag,this);},
+            removeFile (flag) {removeFiles(flag,this);}
+            
         },
         mounted () {
-            this.getSearchData();
+            this.getSearchData({pageSize:this.pageSize,page:1});
         }
         
     }

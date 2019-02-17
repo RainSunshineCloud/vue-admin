@@ -213,37 +213,3 @@ export const objEqual = (obj1, obj2) => {
     /* eslint-disable-next-line */
     else return !keysArr1.some(key => obj1[key] != obj2[key])
 }
-
-/**
- * 获取url
- * @param  {[type]} url_arr [description]
- * @param  {[type]} url     [description]
- * @return {[type]}         [description]
- */
-export const getAxiosParams = (url_arr,url) => {
-    
-    url_arr.sort(function(now,next) {
-        return  next.path.length - now.path.length;
-    });
-    for (let index in url_arr) {
-        if (url.indexOf(url_arr[index].path) > -1) {
-                
-            if (url_arr[index].path == url) {
-                return url_arr[index];
-            } else if (url_arr[index].group) {
-                let sub_url = url.replace(url_arr[index].path,'')
-                let res = getAxiosParams(url_arr[index].group,sub_url)
-                if (res) {
-                    res = Object.assign({},url_arr[index],res)
-                    delete res.group;
-                    delete res.path;
-                    return res;
-                }
-
-                return false;
-            } else {
-                return false;
-            }
-        } 
-    }
-}
