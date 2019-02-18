@@ -34,7 +34,7 @@
                     {
                         title: '类型',
                         key: 'type',
-                        width:80,
+                        width:90,
                         align:'center',
                         render: (h, params) => {
                            return h('div', this.searchField[0][0].fields[params.row.type]);
@@ -100,7 +100,7 @@
                         {
                             key:'type',
                             type:'select',
-                            fields:{'1':'江苏','2':'湖北','3':'吉林','4':'河北','5':'甘肃','6':'上海'},
+                            fields:{'1':'江苏','2':'湖北','3':'吉林','4':'河北','5':'甘肃','6':'上海','7':'一分快三','8': '三分快三','9': '五分快三'},
                             placeholder:'姓名',
                             name:'接口名',
                         },

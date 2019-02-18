@@ -126,7 +126,7 @@ export default [
                 component: () => import('@/view/data/plan.vue')
             },
             {
-                path: '/data_plan',
+                path: '/data_res',
                 name: '结果数据',
                 meta: {
                     hideInMenu: false,

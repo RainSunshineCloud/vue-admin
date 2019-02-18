@@ -45,7 +45,7 @@ export const resets = function (flag,self) {
 export const modifys = function (url,self) {
                 api.post(url,self.modifyModal.formData).then((data) => {
                    self.modifyModal.open = false;
-                   self.getSearchData();
+                   self.getSearchData({pageSize:self.pageSize,page:1});
                 });
            }
 
@@ -53,6 +53,6 @@ export const modifys = function (url,self) {
 export const adds = function (url,self) {
                 api.post(url,self.addModal.formData).then((data) => {
                    self.addModal.open = false;
-                   self.getSearchData();
+                   self.getSearchData({pageSize:self.pageSize,page:1});
                 });
             }

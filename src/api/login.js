@@ -12,15 +12,14 @@ class Login
 
     configs () {
         return {
-            'Token': 1,
         }
     }
     commonThen (req) {
         if (req.data.code) {
-             Message.success(req.data.msg);
+            Message.success(req.data.msg);
             return Promise.resolve({status:1,req});
         } else {
-             Message.error(req.data.msg);
+            Message.error(req.data.msg);
             return Promise.reject(req);
         }   
     }
@@ -42,7 +41,9 @@ class Login
         }
     }
     cookieMiddle (intstance,url,res){
-        setToken(res.data.data.token);
+        if (!!res.data.data.token) {
+            setToken(res.data.data.token);
+        }
     }
 }
 let login = new Login();
