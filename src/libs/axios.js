@@ -36,7 +36,6 @@ class HttpRequest
 	      	const { data, status } = res
 	      	return { data, status }
 	    }, error => {
-	      	let errorInfo = error.response
 	      	for (let key in this.middles.res.error) {
 	      		this.middles.res.success[key](instance,url,error);
 	      	}

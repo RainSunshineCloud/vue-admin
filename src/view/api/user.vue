@@ -80,7 +80,7 @@
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
     import MyUpload from '@/components/my-upload'
-    import {removeFiles,uploadFiles,resets,modifys,adds} from '@/libs/methods.js'
+    import {removeFiles,uploadFiles,resets,modifys,adds,dels} from '@/libs/methods.js'
     export default {
         name: 'api_user',
         components: {
@@ -129,13 +129,13 @@
                         width:100,
                         align:'center',
                         render: (h, params) => {
-                                return h('div', this.getType(params.row.type));
+                            return h('div', this.getType(params.row.type));
                         }
                     },
                     {
                         title: '操作',
                         key: 'oparate',
-                        width:100,
+                        width:150,
                         align:'center',
                         render: (h, params) => {
                             return h('div', [
@@ -151,7 +151,20 @@
                                             this.openModifyModal(params.row);
                                         }
                                     }
-                                }, '修改')
+                                }, '修改'),
+                                h('Button', {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            dels("api/delPlanUser",this,{id:params.row.id});
+                                        }
+                                    }
+                                }, '删除')
                             ]);
                         }
                     }

@@ -17,10 +17,17 @@
         <div style="text-align:center">
             <Form ref="modifyModal.formData" :model="modifyModal.formData" :label-width="80">
                 <FormItem label="名称">
-                    <Input type="text" :readonly="true" v-model="modifyModal.formData.name"></Input>
+                    <Input type="text" v-model="modifyModal.formData.name"></Input>
                 </FormItem>
                 <FormItem label="最大期数">
                     <Input type="text" v-model="modifyModal.formData.max_num"></Input>
+                </FormItem>
+                <FormItem label="状态">
+                    <Select v-model="modifyModal.formData.status">
+                        <template v-for="(val,key) in status_desc">
+                            <Option :value="key">{{val}}</Option>
+                        </template>
+                    </Select>
                 </FormItem>
                 <FormItem label="开始时间">
                     <TimePicker type="time" :value="modifyModal.formData.start_time" placeholder="请选择" style="width: 100%" @on-change="getStartTime"></TimePicker>
@@ -28,8 +35,20 @@
                 <FormItem label="结束时间">
                     <TimePicker type="time" :value="modifyModal.formData.end_time" placeholder="请选择"style="width: 100%" @on-change="getEndTime"></TimePicker>
                 </FormItem>
-                 <FormItem label="间隔">
+                <FormItem label="间隔">
                     <Input type="text" v-model="modifyModal.formData.gap"></Input>
+                </FormItem>
+                <FormItem label="排序">
+                    <Input type="text" v-model="modifyModal.formData.order"></Input>
+                </FormItem>
+                <FormItem label="头像">
+                    <MyUpload :pics="[modifyModal.formData.pic]" :flag= "3" @listenFileUpload="uploadFile" @listenFileRemove="removeFile(3)"></MyUpload>
+                </FormItem>
+                <FormItem label="第二次倒计时">
+                     <TimePicker type="time" :value="modifyModal.formData.k_time" placeholder="请选择"style="width: 100%" @on-change="getKTime"></TimePicker>
+                </FormItem>
+                <FormItem label="底部说明">
+                    <Input type="textarea" v-model="modifyModal.formData.shuoming"></Input>
                 </FormItem>
             </Form>
         </div>
@@ -44,14 +63,20 @@
     
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
+    import MyUpload from '@/components/my-upload'
     import {removeFiles,uploadFiles,resets,modifys,adds} from '@/libs/methods.js'
     export default {
         name: 'api_index',
         components: {
-            Tables
+            Tables,
+            MyUpload
         },
         data () {
             return {
+                status_desc: {
+                    '1': '有效',
+                    '2': '无效'
+                },
                 modifyModal:{
                     open: false,
                     formData:{
@@ -60,22 +85,41 @@
                 table_title: [
                     {
                         title: 'ID',
+                        width:70,
                         key: 'id',
                     },
                     {
                         title: '名称',
+                        width:90,
                         key: 'name',
                     },
                     {
+                        title: '状态',
+                        key: 'status',
+                        width:70,
+                        render: (h, params) => {
+                            return h('div', this.status_desc[params.row.status]);
+                        }
+
+                    },
+                    {
                         title: '开始时间',
+                        width:90,
                         key: 'start_time'
                     },
                     {
                         title: '结束时间',
+                        width:90,
                         key: 'end_time',
+                    },
+                     {
+                        title: '倒计时',
+                        width:90,
+                        key: 'k_time',
                     },
                     {
                         title: '间隔',
+                        width:70,
                         key: 'gap'
                     },
                     {
@@ -83,12 +127,25 @@
                         key: 'url'
                     },
                     {
+                        title: '排序',
+                        key: 'order',
+                        width:90,
+                        align:'center',
+                    },
+                    {
+                        title: '图标',
+                        key: 'pic',
+                        align:'center',
+                    },
+                    {
                         title: '标志',
-                        key: 'flag'
+                        key: 'flag',
+                        width:90,
                     },
                     {
                         title: '最大期数',
-                        key: 'max_num'
+                        key: 'max_num',
+                        width:90,
                     },
                     {
                         title: '操作',
@@ -139,6 +196,9 @@
             getStartTime(data) {
                 this.modifyModal.formData.start_time = data;
             },
+            getKTime(data) {
+                this.modifyModal.formData.k_time = data;
+            },
             //打开模态
             openModifyModal(data) {
                 this.modifyModal.open = true;
@@ -149,10 +209,19 @@
                     end_time:data.end_time,
                     name: data.name,
                     gap: data.gap,
+                    k_time: data.k_time,
+                    shuoming: data.shuoming,
+                    status: data.status + '',
+                    order:data.order,
+                    pic: data.pic
+
                 };
             },
             modify () { console.log(this.modifyModal.formData); modifys('api/modifyConfig',this);},
             reset(flag) {resets(flag,this);},
+            //文件上传
+            uploadFile (param,flag) { uploadFiles(param,flag,this);},
+            removeFile (flag) {removeFiles(flag,this);}
         },
         mounted () {
             this.getSearchData();

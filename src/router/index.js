@@ -135,6 +135,17 @@ export default [
                     icon: 'md-people'
                 },
                 component: () => import('@/view/data/res.vue')
+            },
+            {
+                path: '/data_plan_res',
+                name: '计划结果数据',
+                meta: {
+                    hideInMenu: false,
+                    title: '计划结果数据',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/data/plan_res.vue')
             }
         ]
     },
@@ -158,6 +169,29 @@ export default [
                     icon: 'md-people'
                 },
                 component: () => import('@/view/sql/index.vue')
+            }
+        ]
+    },
+     {
+        path: '/config',
+        name: '其他配置',
+        component: Main,
+        meta: {
+            hideInMenu: false,
+            title: '数据库',
+            notCache: true,
+        },
+        children: [
+            {
+                path: '/config_index',
+                name: '参数配置',
+                meta: {
+                    hideInMenu: false,
+                    title: '参数配置',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/config/index.vue')
             }
         ]
     },

@@ -43,8 +43,8 @@ export default {
   data () {
     return {
       form: {
-        moble: '15820226301',
-        password: '12345678'
+        moble: '',
+        password: ''
       }
     }
   },

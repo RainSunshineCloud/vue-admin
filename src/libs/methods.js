@@ -1,5 +1,6 @@
-
 import api from '@/api/api.js'
+import {Message} from 'iview'
+
 //移除文件
 export const removeFiles = function (flag,self){
     switch (flag) {
@@ -21,6 +22,9 @@ export const uploadFiles = function (param,flag,self) {
                 break;
             case 2:
                 self.addModal.formData.header = data.req.data.data;
+                break;
+            case 3:
+                self.modifyModal.formData.pic = data.req.data.data;
                 break;
         }
         
@@ -54,5 +58,14 @@ export const adds = function (url,self) {
                 api.post(url,self.addModal.formData).then((data) => {
                    self.addModal.open = false;
                    self.getSearchData({pageSize:self.pageSize,page:1});
+                });
+            }
+
+
+//添加
+export const dels = function (url,self,id) {
+                api.post(url,id).then((data) => {
+                    Message.info('删除成功');
+                    self.getSearchData({pageSize:self.pageSize,page:1});
                 });
             }

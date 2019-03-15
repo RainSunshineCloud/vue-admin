@@ -1,6 +1,6 @@
 import HttpRequest from '@/libs/axios'
 import config from '@/config'
-import {getToken,setToken} from '@/libs/util'
+import {getToken,setToken,delToken} from '@/libs/util'
 import {Message} from 'iview'
 
 class Api
@@ -26,7 +26,6 @@ class Api
     commonCatch (error) {
         return {
             then: () => {
-               
             }
         }
     }
@@ -41,9 +40,16 @@ class Api
         req.headers.token = getToken();
     }
     cookieMiddle (intstance,url,res) {
-        if (getToken() != res.headers.token && res.headers.token) {
-            setToken(res.headers.token);
-        }
+        console.log(this);
+        if (getToken() != res.headers.token) {
+            console.log(res.headers.token);
+            if (res.headers.token && res.headers.token != '') {
+                setToken(res.headers.token);
+            } else {
+                delToken();
+                window.location.href = "/#/login"
+            }
+        } 
     }
 }
 let api = new Api();

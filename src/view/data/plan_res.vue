@@ -28,41 +28,26 @@
                     {
                         title: 'ID',
                         key: 'id',
-                        width:70,
                         align:'center',
                     },
                     {
                         title: '用户ID',
                         key: 'user_id',
-                        width:80,
                         align:'center',
                     },
                     {
-                        title: '开始期数',
-                        key: 'start_num',
+                        title: '当前期',
+                        key: 'now_num',
                         align:'center',
                     },
                     {
-                        title: '结束期数',
-                        key: 'end_num',
+                        title: '倍投比例',
+                        key: 'rate',
                         align:'center',
                     },
-                    
-                    {
-                        title: '对比期数',
-                        key: 'compare_issue',
-                        align:'center',
-                    },
-                    {
-                        title: '截止期数',
-                        key: 'hit_num',
-                        align:'center',
-                    },
-
                     {
                         title: '计划',
                         key: 'plan',
-                        width:80,
                         align:'center',
                         render: (h, params) => {
                             return h('div', this.getName(params.row.plan,params.row.type));
@@ -72,7 +57,6 @@
                     {
                         title: '结果',
                         key: 'res',
-                        width:80,
                         align:'center',
                         render: (h, params) => {
                             return h('div', this.getName(params.row.res,params.row.type));
@@ -81,7 +65,6 @@
                     {
                         title: '中/挂',
                         key: 'plan_res',
-                        width:80,
                         align:'center',
                         render: (h, params) => {
                           	return h('div', this.getRes(params.row.plan_res));
@@ -91,13 +74,11 @@
                     {
                         title: '连中',
                         key: 'long_hit',
-                        width:80,
                         align:'center',
                     },
                     {
                         title: '类型',
                         key: 'type',
-                        width:80,
                         align:'center',
                         render: (h, params) => {
                            return h('div', this.getType(params.row.type));
@@ -121,7 +102,7 @@
                             name:'用户ID',
                         },
                         {
-                            key:'start_num',
+                            key:'now_num',
                             type:'text',
                             placeholder:'开始期数',
                             name:'开始期数',
@@ -136,7 +117,7 @@
         methods:{
             getSearchData(data) {
                 this.loading = true;
-                api.get('api/getPlanList',data).then((data) => {
+                api.get('api/getPlanResList',data).then((data) => {
                     this.table_data = data.req.data.data.list;
                     this.total = data.req.data.data.total;
                 });
@@ -171,7 +152,7 @@
             		case 1:
             			return index == 1 ? '小' : '大';
             		case 2:
-            			return index == 2 ? '单' : '双';
+            			return index == 1 ? '单' : '双';
             	}
             }
             
