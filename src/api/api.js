@@ -40,16 +40,14 @@ class Api
         req.headers.token = getToken();
     }
     cookieMiddle (intstance,url,res) {
-        console.log(this);
-        if (getToken() != res.headers.token) {
-            console.log(res.headers.token);
-            if (res.headers.token && res.headers.token != '') {
-                setToken(res.headers.token);
-            } else {
-                delToken();
-                window.location.href = "/#/login"
-            }
-        } 
+        // if (getToken() != res.headers.token) {
+        //     if (res.headers.token && res.headers.token != '') {
+        //         setToken(res.headers.token);
+        //     } else {
+        //         delToken();
+        //         window.location.href = "/#/login"
+        //     }
+        // }
     }
 }
 let api = new Api();

@@ -1,6 +1,6 @@
 # vue-admin
 
-> A Vue.js project
+> 根据view-admin修改的一套管理端，去除了vuex.修改了router的布局和api交互方式,默认不开启国际化
 
 ## Build Setup
 
@@ -18,4 +18,3 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

@@ -9,17 +9,17 @@ export default {
     *              如果不使用，则需要在路由中给需要在菜单中展示的路由设置meta: {title: 'xxx'}
     *              用来在菜单中显示文字
     */
-    useI18n: true,
+    useI18n: false,
 
     devApiConfig: {
-        baseURL: 'http://www.foxconn.com/admin',
+        baseURL: 'http://www.test.com/admin',
         timeout: 100000,
         withCredentials: false,
         // adapter: function (config){console.log(config);},
         responseType: 'json',
     },
     proApiConfig : {
-        baseURL: 'http://www.foxconn.com/admin',
+        baseURL: 'http://www.test.com/admin',
         timeout: 3000,
         withCredentials: false,
         responseType: 'json',
@@ -27,5 +27,5 @@ export default {
     /**
     * @description 默认打开的首页的路由name值，默认为home
     */
-    homeName: '接口配置',
+    homeName: 'api_index',
 }

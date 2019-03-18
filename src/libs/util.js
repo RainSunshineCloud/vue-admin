@@ -33,7 +33,9 @@ const showThisMenuEle = (item, access) => {
 export const getMenuByRouter = (list, access) => {
     let res = []
     forEach(list, item => {
-        if (!item.meta || (item.meta && !item.meta.hideInMenu)) {
+        if (item.type && item.type == "layout") {
+            res = res.concat(getMenuByRouter(item.children, access));
+        }else if (!item.meta || (item.meta && !item.meta.hideInMenu)) {
             let obj = {
                 icon: (item.meta && item.meta.icon) || '',
                 name: item.name,
@@ -46,6 +48,7 @@ export const getMenuByRouter = (list, access) => {
             if (showThisMenuEle(item, access)) res.push(obj)
         }
     })
+
     return res
 }
 
@@ -55,13 +58,11 @@ export const getMenuByRouter = (list, access) => {
  */
 export const getBreadCrumbList = (route, homeRoute) => {
     let homeItem = { ...homeRoute, icon: homeRoute.meta.icon }
-
     let routeMetched = route.matched
-
     if (routeMetched.some(item => item.name === homeRoute.name)) return [homeItem]
 
     let res = routeMetched.filter(item => {
-        return item.meta === undefined || !item.meta.hideInBread
+        return item.name != undefined && (item.meta === undefined || !item.meta.hideInBread)
     }).map(item => {
         let meta = {...item.meta}
         if (meta.title && typeof meta.title === 'function') meta.title = meta.title(route)
@@ -76,7 +77,9 @@ export const getBreadCrumbList = (route, homeRoute) => {
     res = res.filter(item => {
         return !item.meta.hideInMenu
     })
-    return [{...homeItem, to: homeRoute.path}, ...res]
+
+    return res;
+    // return [{...homeItem, to: homeRoute.path}, ...res]
 }
 
 export const getRouteTitleHandled = (route) => {
@@ -97,7 +100,7 @@ export const showTitle = (item, vm) => {
     if (!title) return
     if (vm.$config.useI18n) {
         if (title.includes('{{') && title.includes('}}') && vm.$config.useI18n) title = title.replace(/({{[\s\S]+?}})/, (m, str) => str.replace(/{{([\s\S]*)}}/, (m, _) => vm.$t(_.trim())))
-        else title = vm.$t(item.name)
+        else title = vm.$t(item.meta.title)
     } else title = (item.meta && item.meta.title) || item.name
     return title
 }
@@ -133,6 +136,7 @@ export const getHomeRoute = (routers, homeName = 'home') => {
             if (item.name === homeName) homeRoute = item
         }
     }
+
     return homeRoute
 }
 
@@ -197,10 +201,11 @@ export const getParams = url => {
  * @param {Array} list 标签列表
  * @param {String} name 当前关闭的标签的name
  */
-export const getNextRoute = (list, route) => {
+export const getNextRoute = (list, route ,homeName) => {
     let res = {}
+
     if (list.length === 2) {
-        res = getHomeRoute(list)
+        res = getHomeRoute(list,homeName)
     } else {
         const index = list.findIndex(item => routeEqual(item, route))
         if (index === list.length - 1) res = list[list.length - 2]
@@ -351,3 +356,96 @@ export const localSave = (key, value) => {
 export const localRead = (key) => {
     return localStorage.getItem(key) || ''
 }
+
+/**
+ * 设置标签
+ * @param  {[type]} homeRoute [description]
+ * @param  {[type]} list      [description]
+ * @return {[type]}           [description]
+ */
+export const setTagNavList = (homeRoute,list) => {
+    let tagList = [];
+    if (list) {
+        tagList = [...list];
+    } else {
+        tagList = getTagNavListFromLocalstorage() || []
+    }
+
+    if (tagList[0] && tagList[0].name !== homeRoute.name) tagList.shift()
+
+    let homeTagIndex = tagList.findIndex(item => item.name === homeRoute.name)
+    if (homeTagIndex > 0) {
+        let homeTag = tagList.splice(homeTagIndex, 1)[0]
+        tagList.unshift(homeTag)
+    }
+
+    setTagNavListInLocalstorage([...tagList])
+    return tagList;
+}
+
+/**
+ * 删除列表
+ * @param  {[type]} name [description]
+ * @param  {[type]} list [description]
+ * @param  {[type]} type [description]
+ * @return {[type]}      [description]
+ */
+export const delTagNavList = (name,list,type) => {
+    let nametagIndex = -1;
+    switch (type) {
+        case 1: //关闭一个
+            nametagIndex = list.findIndex(item => item.name === name)
+            if (nametagIndex > 0) {
+                list.splice(nametagIndex, 1)
+            }
+            break;
+        case 2://关闭其他
+            nametagIndex = list.findIndex(item => item.name === name)
+            let tmp = [];
+            tmp.push(list.splice(nametagIndex,1)[0]);
+            if (nametagIndex != 0) {
+                tmp.unshift(list.shift());
+            }
+            list = tmp;
+            break;
+        case 3:
+            list.splice(1)
+            break;
+    }
+    
+    setTagNavListInLocalstorage([...list])
+    return list;
+}
+
+export const addTag = (tagNavList, homeName , { route, type = 'unshift' }) => {
+    let router = getRouteTitleHandled(route)
+    if (!routeHasExist(tagNavList, router)) {
+
+        if (type === 'push') tagNavList.push(router)
+        else {
+          if (router.name === homeName) tagNavList.unshift(router)
+          else tagNavList.splice(1, 0, router)
+        }
+
+        setTagNavListInLocalstorage([...tagNavList]);
+    }
+    return tagNavList;
+}
+
+export const closeTag = (tagNavList,route) => {
+            let tag = tagNavList.filter(item => routeEqual(item, route))
+            route = tag[0] ? tag[0] : null
+            if (!route) return
+            closePage(tagNavList, route)  
+        }
+export const closePage = (tagNavList, route) => {
+      const nextRoute = getNextRoute(tagNavList, route)
+        tagNavList = tagNavList.filter(item => {
+        return !routeEqual(item, route)
+      })
+      router.push(nextRoute)
+}
+
+export const setLocal = (lang) => {
+            localSave('local', lang)
+        }

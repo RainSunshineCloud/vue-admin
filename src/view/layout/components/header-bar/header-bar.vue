@@ -18,12 +18,13 @@ export default {
     customBreadCrumb
   },
   props: {
-    collapsed: Boolean
+    collapsed: Boolean,
+    breadCrumbList:Array,
   },
   computed: {
-    breadCrumbList () {
-      return this.$store.state.app.breadCrumbList
-    }
+    // breadCrumbList () {
+    //   return this.$store.state.app.breadCrumbList
+    // }
   },
   methods: {
     handleCollpasedChange (state) {
