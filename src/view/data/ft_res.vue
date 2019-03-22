@@ -18,7 +18,7 @@
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
     export default {
-        name: 'data_res',
+        name: 'data_ft_res',
         components: {
             Tables,
         },
@@ -67,32 +67,44 @@
                         title: '开奖号码',
                         key: 'now_code',
                         align:'center',
-                        width:90,
                     },
                     {
-                        title: '总和',
-                        key: 'sum_num',
-                        align:'center',
-                        width:80,
-                    },
-                    {
-                        title: '大/小',
-                        key: 'is_big',
+                        title: '冠军大小',
+                        key: 'f_is_big',
                         align:'center',
                         width:80,
                         render: (h, params) => {
-                            return h('div', this.getName(params.row.is_big,1));
+                            return h('div', this.getName(params.row.f_is_big,1));
                         }
                     },
                     {
-                        title: '单/双',
-                        key: 'is_double',
+                        title: '冠军单双',
+                        key: 'f_is_double',
                         align:'center',
                         width:80,
                         render: (h, params) => {
-                            return h('div', this.getName(params.row.is_double,2));
+                             return h('div', this.getName(params.row.f_is_double,2));
                         }
-                    }
+                    },
+                    {
+                        title: '亚军大小',
+                        key: 's_is_big',
+                        align:'center',
+                        width:80,
+                        render: (h, params) => {
+                            return h('div', this.getName(params.row.s_is_big,1));
+                        }
+                    },
+                    {
+                        title: '亚军单双',
+                        key: 's_is_double',
+                        align:'center',
+                        width:80,
+                        render: (h, params) => {
+                            return h('div', this.getName(params.row.s_is_double,2));
+                        }
+                    },
+  
                 ],
                 table_data: [],
                 searchField: [
@@ -100,7 +112,7 @@
                         {
                             key:'type',
                             type:'select',
-                            fields:{'1':'江苏','2':'湖北','3':'吉林','4':'河北','5':'甘肃','6':'上海','7':'一分快三','8': '三分快三','9': '五分快三','11':'蛋蛋'},
+                            fields:{'10':"飞艇"},
                             placeholder:'姓名',
                             name:'接口名',
                         },
@@ -120,7 +132,7 @@
         methods:{
             getSearchData(data) {
                 this.loading = true;
-                api.get('api/getResList',data).then((data) => {
+                api.get('api/getFtResList',data).then((data) => {
                     this.table_data = data.req.data.data.list;
                     this.total = data.req.data.data.total;
                 });

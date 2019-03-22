@@ -137,6 +137,17 @@ export default [
                 component: () => import('@/view/data/res.vue')
             },
             {
+                path: '/data_ft_res',
+                name: '飞艇结果数据',
+                meta: {
+                    hideInMenu: false,
+                    title: '飞艇结果数据',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/data/ft_res.vue')
+            },
+            {
                 path: '/data_plan_res',
                 name: '计划结果数据',
                 meta: {

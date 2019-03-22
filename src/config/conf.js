@@ -12,14 +12,14 @@ export default {
     useI18n: true,
 
     devApiConfig: {
-        baseURL: 'http://www.foxconn.com/admin',
+        baseURL: 'http://www.test.com/admin',
         timeout: 100000,
         withCredentials: false,
         // adapter: function (config){console.log(config);},
         responseType: 'json',
     },
     proApiConfig : {
-        baseURL: 'http://www.foxconn.com/admin',
+        baseURL: 'http://www.test.com/admin',
         timeout: 3000,
         withCredentials: false,
         responseType: 'json',
