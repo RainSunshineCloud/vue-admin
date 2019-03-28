@@ -11,12 +11,43 @@
             @listenResetFormData = "getResetData"
             >
         </Tables>
+        <Modal v-model="modifyModal.open" width="660" @on-cancel="reset(1)">
+            <p slot="header">
+                <span>修改</span>
+            </p>
+            <div style="text-align:center">
+                <Form ref="modifyModal.formData" :model="modifyModal.formData" :label-width="110">
+                    <FormItem label="ID">
+                        <Input type="text" :readonly="true" v-model="modifyModal.formData.id"></Input>
+                    </FormItem>
+                    <FormItem label="下一期">
+                        <Input type="text" v-model="modifyModal.formData.next_num"></Input>
+                    </FormItem>
+                    <FormItem label="总期数">
+                        <Input type="text" v-model="modifyModal.formData.total_count"></Input>
+                    </FormItem>
+                    <FormItem label="当前开奖时间戳">
+                        <Input type="text" v-model="modifyModal.formData.now_time"></Input>
+                    </FormItem>
+                    <FormItem label="下一期开奖时间戳">
+                        <Input type="text" v-model="modifyModal.formData.next_num"></Input>
+                    </FormItem>
+                    
+                </Form>
+            </div>
+            <div slot="footer">
+                <Button type="primary" @click="modify" :disabled="loading">修改</Button>
+                <Button type="default" @click="reset(1)" style="margin-left: 8px" :disabled="loading">返回</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
     
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
+    import {dateFormat} from '@/libs/tools.js'
+    import {resets,modifys} from '@/libs/methods.js'
     export default {
         name: 'data_res',
         components: {
@@ -76,6 +107,24 @@
                         width:80,
                     },
                     {
+                        title: '当前开奖时间',
+                        key: 'now_time',
+                        align:'center',
+                        width:120,
+                        render : (h,params) => {
+                           return h("div",dateFormat(params.row.now_time,"m-d H:i"));
+                        }
+                    },
+                     {
+                        title: '下期开奖时间',
+                        key: 'next_time',
+                        align:'center',
+                        width:120,
+                        render : (h,params) => {
+                           return h("div",dateFormat(params.row.next_time,"m-d H:i"));
+                        }
+                    },
+                    {
                         title: '大/小',
                         key: 'is_big',
                         align:'center',
@@ -92,8 +141,36 @@
                         render: (h, params) => {
                             return h('div', this.getName(params.row.is_double,2));
                         }
+                    },
+                    {
+                        title: '操作',
+                        key: 'oparate',
+                        width:80,
+                        align:'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.openModifyModal(params.row);
+                                        }
+                                    }
+                                }, '修改')
+                            ]);
+                        }
                     }
                 ],
+                modifyModal:{
+                    open: false,
+                    formData:{
+                    },
+                },
                 table_data: [],
                 searchField: [
                     [
@@ -139,12 +216,25 @@
             		case 2:
             			return type == 2 ? '大' : '双';
             	}
-            }
-            
+            },
+            reset(flag) {resets(flag,this);},
+            modify () {modifys('api/modifyPlan',this);},
+            //打开模态
+            openModifyModal(data) {
+                this.modifyModal.open = true;
+                this.modifyModal.formData = {
+                    id: data.id,
+                    next_num: data.next_num,
+                    total_count: data.total_count,
+                    now_time:data.now_time + "",
+                    next_time:data.now_time + "",
+                };
+            },
         },
         mounted () {
             this.getSearchData({pageSize:this.pageSize,page:1});
-        }
+        },
+        
         
     }
 </script>

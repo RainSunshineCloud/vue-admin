@@ -10,6 +10,10 @@ export const removeFiles = function (flag,self){
         case 2:
             self.addModal.formData.header = '';
             break;
+        case 3:
+            console.log(self);
+            self.modifyModal.formData.pic = '';
+            break;
     }   
 }
 //文件上传

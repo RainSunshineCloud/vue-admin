@@ -91,7 +91,7 @@
                         {
                             key:'type',
                             type:'select',
-                            fields:{1:'大小',2:'单双',3:''},
+                            fields:{1:'冠军大小',2:'冠军单双',3:'冠军定位',4:'亚军大小',5:'亚军单双'},
                             placeholder:'类型',
                             name:'类型',
                         },
@@ -117,7 +117,7 @@
         methods:{
             getSearchData(data) {
                 this.loading = true;
-                api.get('api/getPlanResList',data).then((data) => {
+                api.get('Ftapi/getPlanResList',data).then((data) => {
                     this.table_data = data.req.data.data.list;
                     this.total = data.req.data.data.total;
                 });
@@ -130,9 +130,15 @@
             getType(type) {
                 switch (type) {
                     case 1:
-                        return '大小';
+                        return '冠军大小';
                     case 2:
-                        return '单双';
+                        return '冠军单双';
+                    case 3:
+                        return "冠军定位";
+                     case 4:
+                        return '亚军大小';
+                    case 5:
+                        return '亚军单双';
                 }
             },
             getRes(res) {
@@ -147,13 +153,19 @@
             },
             getName(index,type) {
             	switch (type) {
-            		case 0:
-            			return '?';
-            		case 1:
-            			return index == 1 ? '小' : '大';
-            		case 2:
-            			return index == 1 ? '单' : '双';
-            	}
+                    case 0:
+                        return '?';
+                    case 1:
+                        return index == 1 ? '小' : '大';
+                    case 2:
+                        return index == 2 ? '单' : '双';
+                    case 3:
+                        return index;
+                    case 4:
+                        return index == 1 ? '小' : '大';
+                    case 5:
+                        return index == 2 ? '单' : '双';
+                }
             }
             
         },

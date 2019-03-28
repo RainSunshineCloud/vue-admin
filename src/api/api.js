@@ -15,7 +15,7 @@ class Api
         }
     }
     commonThen (req) {
-        if (req.data.code) {
+        if (parseInt(req.status) == 200 && parseInt(req.data.code) == 200) {
             return Promise.resolve({status:1,req});
         } else {
             Message.error(req.data.msg);
@@ -40,14 +40,14 @@ class Api
         req.headers.token = getToken();
     }
     cookieMiddle (intstance,url,res) {
-        // if (getToken() != res.headers.token) {
-        //     if (res.headers.token && res.headers.token != '') {
-        //         setToken(res.headers.token);
-        //     } else {
-        //         delToken();
-        //         window.location.href = "/#/login"
-        //     }
-        // }
+        if (getToken() != res.headers.token) {
+            if (res.headers.token && res.headers.token != '') {
+                setToken(res.headers.token);
+            } else {
+                delToken();
+                window.location.href = "/#/login"
+            }
+        }
     }
 }
 let api = new Api();

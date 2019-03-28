@@ -25,6 +25,13 @@
                     <FormItem label="名称">
                         <Input type="text" v-model="modifyModal.formData.nickname"></Input>
                     </FormItem>
+                    <FormItem label="状态">
+                        <Select v-model="modifyModal.formData.status">
+                            <Option value=1>使用中</Option>
+                            <Option value=2>不显示</Option>
+                            <Option value=2>不生成</Option>
+                        </Select>
+                    </FormItem>
                     <FormItem label="头像">
                         <MyUpload :pics="[modifyModal.formData.header]" @listenFileUpload="uploadFile" :flag= "1" @listenFileRemove="removeFile(1)"></MyUpload>
                     </FormItem>
@@ -80,7 +87,7 @@
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
     import MyUpload from '@/components/my-upload'
-    import {removeFiles,uploadFiles,resets,modifys,adds,dels} from '@/libs/methods.js'
+    import {removeFiles,uploadFiles,resets,modifys,adds} from '@/libs/methods.js'
     export default {
         name: 'api_user',
         components: {
@@ -124,6 +131,15 @@
                         align:'center',
                     },
                     {
+                        title: '状态',
+                        key: 'status',
+                        width:100,
+                        align:'center',
+                        render: (h, params) => {
+                            return h('div', this.getStatus(params.row.status));
+                        }
+                    },
+                    {
                         title: '类型',
                         key: 'type',
                         width:100,
@@ -152,19 +168,19 @@
                                         }
                                     }
                                 }, '修改'),
-                                h('Button', {
-                                    props: {
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            dels("api/delPlanUser",this,{id:params.row.id});
-                                        }
-                                    }
-                                }, '删除')
+                                // h('Button', {
+                                //     props: {
+                                //         size: 'small'
+                                //     },
+                                //     style: {
+                                //         marginRight: '5px'
+                                //     },
+                                //     on: {
+                                //         click: () => {
+                                //             dels("api/delPlanUser",this,{id:params.row.id});
+                                //         }
+                                //     }
+                                // }, '删除')
                             ]);
                         }
                     }
@@ -175,7 +191,7 @@
                         {
                             key:'flag',
                             type:'select',
-                            fields:{'1':'江苏','2':'湖北','3':'吉林','4':'河北','5':'甘肃','6':'上海','7':'一分快三','8': '三分快三','9': '五分快三'},
+                            fields:{'1':'江苏','2':'湖北','3':'吉林','4':'河北','5':'甘肃','6':'上海','7':'一分快三','8': '三分快三','9': '五分快三','10':'幸运飞艇','11':'蛋蛋'},
                             placeholder:'姓名',
                             name:'接口名',
                         }
@@ -207,7 +223,16 @@
                         return '业内专家';
                 }
             },
-
+            getStatus(status) {
+                switch (status) {
+                    case 1:
+                        return '使用中';
+                    case 2:
+                        return '不显示';
+                    case 3:
+                        return '不生成';
+                }
+            },
             //打开模态
             openModifyModal(data) {
                 this.modifyModal.open = true;
@@ -216,6 +241,7 @@
                     nickname: data.nickname,
                     header: data.header,
                     type: '' + data.type,
+                    status: '' + data.status,
                 };
             },
             openAddModal() {
@@ -232,7 +258,7 @@
             reset(flag) {resets(flag,this);},
             //文件上传
             uploadFile (param,flag) { uploadFiles(param,flag,this);},
-            removeFile (flag) {removeFiles(flag,this);}
+            // removeFile (flag) {removeFiles(flag,this);}
             
         },
         mounted () {

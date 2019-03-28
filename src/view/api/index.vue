@@ -217,7 +217,7 @@
 
                 };
             },
-            modify () { console.log(this.modifyModal.formData); modifys('api/modifyConfig',this);},
+            modify () {modifys('api/modifyConfig',this);},
             reset(flag) {resets(flag,this);},
             //文件上传
             uploadFile (param,flag) { uploadFiles(param,flag,this);},

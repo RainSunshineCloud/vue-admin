@@ -100,6 +100,17 @@ const getDate = (timeStamp, startType) => {
     return resStr
 }
 
+export const dateFormat = (timeStamp, startFormat) => {
+    startFormat = startFormat || "Y-m-d H:i:s";
+    const d = new Date(timeStamp * 1000)
+    const year = d.getFullYear()
+    const month = getHandledValue(d.getMonth() + 1)
+    const date = getHandledValue(d.getDate())
+    const hours = getHandledValue(d.getHours())
+    const minutes = getHandledValue(d.getMinutes())
+    const second = getHandledValue(d.getSeconds())
+    return startFormat.replace('Y',year).replace('m',month).replace("d",date).replace('H',hours).replace("i",minutes).replace('s',second);
+}
 /**
  * @param {String|Number} timeStamp 时间戳
  * @returns {String} 相对时间字符串

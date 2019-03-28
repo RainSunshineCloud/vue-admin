@@ -15,9 +15,9 @@ class Login
         }
     }
     commonThen (req) {
-        if (req.data.code) {
-            Message.success(req.data.msg);
-            return Promise.resolve({status:1,req});
+        if (parseInt(req.status) == 200 && parseInt(req.data.code) == 200) {
+            Message.success("登录成功");
+            return Promise.resolve({status:200,req});
         } else {
             Message.error(req.data.msg);
             return Promise.reject(req);
@@ -41,8 +41,8 @@ class Login
         }
     }
     cookieMiddle (intstance,url,res){
-        if (!!res.data.data.token) {
-            setToken(res.data.data.token);
+        if (!!res.headers.token) {
+            setToken(res.headers.token);
         }
     }
 }

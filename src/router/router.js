@@ -1,4 +1,4 @@
-const Default = { template: "<router-view></router-view>"}
+﻿const Default = { template: "<router-view></router-view>"}
 
 export default [
 	{
@@ -59,19 +59,19 @@ export default [
             }
         ]
     },
-        {
+    {
         path: '/data',
-        name: '数据管理',
+        name: 'data',
         component: Default,
         meta: {
             hideInMenu: false,
-            title: '数据管理',
+            title: '快三数据',
             notCache: true,
         },
         children: [
             {
                 path: '/data_plan',
-                name: '计划管理',
+                name: 'data_plan',
                 meta: {
                     hideInMenu: false,
                     title: '计划管理',
@@ -82,7 +82,7 @@ export default [
             },
             {
                 path: '/data_res',
-                name: '结果数据',
+                name: 'data_res',
                 meta: {
                     hideInMenu: false,
                     title: '结果数据',
@@ -93,15 +93,105 @@ export default [
             },
             {
                 path: '/data_plan_res',
-                name: '计划结果数据',
+                name: 'data_plan_res',
                 meta: {
                     hideInMenu: false,
-                    title: '计划结果数据',
+                    title: '计划结果',
                     notCache: true,
                     icon: 'md-people'
                 },
                 component: () => import('@/view/data/plan_res.vue')
-            }
+            },
+        ]
+    },
+    {
+        path: '/dd_data',
+        name: 'dd_data',
+        component: Default,
+        meta: {
+            hideInMenu: false,
+            title: '蛋蛋数据',
+            notCache: true,
+        },
+        children: [
+            {
+                path: '/dd_data_plan',
+                name: 'dd_data_plan',
+                meta: {
+                    hideInMenu: false,
+                    title: '计划管理',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/dd_data/plan.vue')
+            },
+            {
+                path: '/dd_data_res',
+                name: 'dd_data_res',
+                meta: {
+                    hideInMenu: false,
+                    title: '结果数据',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/dd_data/res.vue')
+            },
+            {
+                path: '/dd_data_plan_res',
+                name: 'dd_data_plan_res',
+                meta: {
+                    hideInMenu: false,
+                    title: '计划结果',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/dd_data/plan_res.vue')
+            },
+        ]
+    },
+    {
+        path: '/ft_data',
+        name: 'ft_data',
+        component: Default,
+        meta: {
+            hideInMenu: false,
+            title: '飞艇数据',
+            notCache: true,
+        },
+        children: [
+            {
+                path: '/ft_data_plan',
+                name: 'ft_data_plan',
+                meta: {
+                    hideInMenu: false,
+                    title: '计划管理',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/ft_data/plan.vue')
+            },
+            {
+                path: '/ft_data_res',
+                name: 'ft_data_res',
+                meta: {
+                    hideInMenu: false,
+                    title: '结果管理',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/ft_data/res.vue')
+            },
+            {
+                path: '/ft_data_plan_res',
+                name: 'ft_data_plan_res',
+                meta: {
+                    hideInMenu: false,
+                    title: '计划结果',
+                    notCache: true,
+                    icon: 'md-people'
+                },
+                component: () => import('@/view/ft_data/plan_res.vue')
+            },
         ]
     },
     {

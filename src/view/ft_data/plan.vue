@@ -114,7 +114,7 @@
                         width:80,
                         align:'center',
                         render: (h, params) => {
-                          	return h('div', this.getRes(params.row.plan_res));
+                            return h('div', this.getRes(params.row.plan_res));
                         }
 
                     },
@@ -163,7 +163,7 @@
                         {
                             key:'type',
                             type:'select',
-                            fields:{1:'大小',2:'单双'},
+                            fields:{1:'冠军大小',2:'冠军单双',3:'冠军定位',4:'亚军大小',5:'亚军单双'},
                             placeholder:'类型',
                             name:'类型',
                         },
@@ -189,7 +189,7 @@
         methods:{
             getSearchData(data) {
                 this.loading = true;
-                api.get('api/getPlanList',data).then((data) => {
+                api.get('Ftapi/getPlanList',data).then((data) => {
                     this.table_data = data.req.data.data.list;
                     this.total = data.req.data.data.total;
                 });
@@ -197,22 +197,29 @@
                 this.loading = false;
             },
             reset(flag) {resets(flag,this);},
-            modify () {modifys('api/modifyRes',this);},
+            modify () {modifys('Ftapi/modifyRes',this);},
             getResetData(data) {
                 this.getSearchData(data);
             },
             getType(type) {
                 switch (type) {
                     case 1:
-                        return '大小';
+                        return '冠军大小';
                     case 2:
-                        return '单双';
+                        return '冠军单双';
+                    case 3:
+                        return "冠军定位";
+                     case 4:
+                        return '亚军大小';
+                    case 5:
+                        return '亚军单双';
+
                 }
             },
             getRes(res) {
                 switch (res) {
-                	case 0:
-            			return '?';
+                    case 0:
+                        return '?';
                     case 1:
                         return '中';
                     case 2:
@@ -220,14 +227,20 @@
                 }
             },
             getName(index,type) {
-            	switch (type) {
-            		case 0:
-            			return '?';
-            		case 1:
-            			return index == 1 ? '小' : '大';
-            		case 2:
-            			return index == 2 ? '单' : '双';
-            	}
+                switch (type) {
+                    case 0:
+                        return '?';
+                    case 1:
+                        return index == 1 ? '小' : '大';
+                    case 2:
+                        return index == 2 ? '单' : '双';
+                    case 3:
+                        return index;
+                    case 4:
+                        return index == 1 ? '小' : '大';
+                    case 5:
+                        return index == 2 ? '单' : '双';
+                }
             },
             //打开模态
             openModifyModal(data) {

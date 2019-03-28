@@ -91,7 +91,7 @@
                         {
                             key:'type',
                             type:'select',
-                            fields:{1:'大小',2:'单双',3:''},
+                            fields:{1:'大小',2:'单双'},
                             placeholder:'类型',
                             name:'类型',
                         },
@@ -117,7 +117,7 @@
         methods:{
             getSearchData(data) {
                 this.loading = true;
-                api.get('api/getPlanResList',data).then((data) => {
+                api.get('Ddapi/getPlanResList',data).then((data) => {
                     this.table_data = data.req.data.data.list;
                     this.total = data.req.data.data.total;
                 });

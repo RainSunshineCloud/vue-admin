@@ -18,15 +18,15 @@ const router = new VueRouter({
     routes 
 })
 
-router.beforeEach( (to,from,next) => {
-    if (to.matched.length == 0) { //未有匹配
-        next({name:config.homeName});
-    } else if (to.path != '/login' && !getToken()) { //未登陆
-		next({path:'/login'})
-	} else {
-        next()
-    } 
-});
+// router.beforeEach( (to,from,next) => {
+//     if (to.matched.length == 0) { //未有匹配
+//         next({name:config.homeName});
+//     } else if (to.path != '/login' && !getToken()) { //未登陆
+// 		next({path:'/login'})
+// 	} else {
+//         next()
+//     } 
+// });
 
 
 

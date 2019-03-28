@@ -16,19 +16,23 @@
                 <span>修改</span>
             </p>
             <div style="text-align:center">
-                <Form ref="modifyModal.formData" :model="modifyModal.formData" :label-width="100">
+                <Form ref="modifyModal.formData" :model="modifyModal.formData" :label-width="110">
                     <FormItem label="ID">
                         <Input type="text" :readonly="true" v-model="modifyModal.formData.id"></Input>
                     </FormItem>
-                    <FormItem label="开始期数">
-                        <Input type="text" v-model="modifyModal.formData.start_num"></Input>
+                    <FormItem label="下一期">
+                        <Input type="text" v-model="modifyModal.formData.next_num"></Input>
                     </FormItem>
-                    <FormItem label="结束期数">
-                        <Input type="text" v-model="modifyModal.formData.end_num"></Input>
+                    <FormItem label="总期数">
+                        <Input type="text" v-model="modifyModal.formData.total_count"></Input>
                     </FormItem>
-                    <FormItem label="对比期数">
-                        <Input type="text" v-model="modifyModal.formData.compare_issue"></Input>
+                    <FormItem label="当前开奖时间戳">
+                        <Input type="text" v-model="modifyModal.formData.now_time"></Input>
                     </FormItem>
+                    <FormItem label="下一期开奖时间戳">
+                        <Input type="text" v-model="modifyModal.formData.next_num"></Input>
+                    </FormItem>
+                    
                 </Form>
             </div>
             <div slot="footer">
@@ -39,21 +43,18 @@
     </div>
 </template>
 <script>
+    
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
-    import {resets,modifys} from '@/libs/methods.js'
+    import {modifys} from '@/libs/methods.js'
+    import {dateFormat} from '@/libs/tools.js'
     export default {
-        name: 'data_plan',
+        name: 'data_ft_res',
         components: {
             Tables,
         },
         data () {
             return {
-                modifyModal:{
-                    open: false,
-                    formData:{
-                    },
-                },
                 table_title: [
                     {
                         title: 'ID',
@@ -62,75 +63,105 @@
                         align:'center',
                     },
                     {
-                        title: '用户ID',
-                        key: 'user_id',
-                        width:80,
+                        title: '类型',
+                        key: 'type',
+                        width:90,
+                        align:'center',
+                        render: (h, params) => {
+                           return h('div', this.searchField[0][0].fields[params.row.type]);
+                        }
+                    },
+                    {
+                        title: '当前期',
+                        key: 'now_num',
+                        width:120,
                         align:'center',
                     },
                     {
-                        title: '开始期数',
-                        key: 'start_num',
+                        title: '下一期',
+                        key: 'next_num',
+                        width:120,
                         align:'center',
                     },
                     {
-                        title: '结束期数',
-                        key: 'end_num',
+                        title: '已开期数',
+                        key: 'draw_count',
+                        width:90,
                         align:'center',
                     },
                     
                     {
-                        title: '对比期数',
-                        key: 'compare_issue',
+                        title: '总期数',
+                        key: 'total_count',
+                        align:'center',
+                        width:80
+                    },
+                     {
+                        title: '开奖号码',
+                        key: 'now_code',
                         align:'center',
                     },
                     {
-                        title: '截止期数',
-                        key: 'hit_num',
+                        title: '当前开奖时间',
+                        key: 'now_time',
                         align:'center',
-                    },
-
-                    {
-                        title: '计划',
-                        key: 'plan',
-                        width:80,
-                        align:'center',
-                        render: (h, params) => {
-                            return h('div', this.getName(params.row.plan,params.row.type));
-                        }
-
-                    },
-                    {
-                        title: '结果',
-                        key: 'res',
-                        width:80,
-                        align:'center',
-                        render: (h, params) => {
-                            return h('div', this.getName(params.row.res,params.row.type));
+                        width:120,
+                        render : (h,params) => {
+                           return h("div",dateFormat(params.row.now_time,"m-d H:i"));
                         }
                     },
-                    {
-                        title: '中/挂',
-                        key: 'plan_res',
-                        width:80,
+                     {
+                        title: '下期开奖时间',
+                        key: 'next_time',
                         align:'center',
-                        render: (h, params) => {
-                          	return h('div', this.getRes(params.row.plan_res));
+                        width:120,
+                        render : (h,params) => {
+                           return h("div",dateFormat(params.row.next_time,"m-d H:i"));
                         }
-
                     },
                     {
-                        title: '连中',
-                        key: 'long_hit',
-                        width:80,
+                        title: '冠军大小',
+                        key: 'f_is_big',
                         align:'center',
-                    },
-                    {
-                        title: '类型',
-                        key: 'type',
-                        width:80,
-                        align:'center',
+                        width:70,
                         render: (h, params) => {
-                           return h('div', this.getType(params.row.type));
+                            return h('div', this.getName(params.row.f_is_big,1));
+                        }
+                    },
+                    {
+                        title: '冠军单双',
+                        key: 'f_is_double',
+                        align:'center',
+                        width:70,
+                        render: (h, params) => {
+                             return h('div', this.getName(params.row.f_is_double,2));
+                        }
+                    },
+                    {
+                        title: '亚军大小',
+                        key: 's_is_big',
+                        align:'center',
+                        width:70,
+                        render: (h, params) => {
+                            return h('div', this.getName(params.row.s_is_big,1));
+                        }
+                    },
+                    {
+                        title: '亚军单双',
+                        key: 's_is_double',
+                        align:'center',
+                        width:70,
+                        render: (h, params) => {
+                            return h('div', this.getName(params.row.s_is_double,2));
+                        }
+                    },
+                    {
+                        title: '亚军单双',
+                        key: 's_is_double',
+                        align:'center',
+                        width:70,
+                        render: (h, params) => {
+                            return h('div', this.getName(params.row.s_is_double,2));
                         }
                     },
                     {
@@ -156,29 +187,29 @@
                             ]);
                         }
                     }
+
                 ],
+                modifyModal:{
+                    open: false,
+                    formData:{
+                    },
+                },
                 table_data: [],
                 searchField: [
                     [
                         {
                             key:'type',
                             type:'select',
-                            fields:{1:'大小',2:'单双'},
-                            placeholder:'类型',
-                            name:'类型',
+                            fields:{'10':"飞艇"},
+                            placeholder:'姓名',
+                            name:'接口名',
                         },
                         {
-                            key:'user_id',
+                            key:'now_num',
                             type:'text',
-                            placeholder:'用户ID',
-                            name:'用户ID',
+                            placeholder:'期数',
+                            name:'期数',
                         },
-                        {
-                            key:'start_num',
-                            type:'text',
-                            placeholder:'开始期数',
-                            name:'开始期数',
-                        }
                     ]
                 ],
                 loading:false,
@@ -189,61 +220,42 @@
         methods:{
             getSearchData(data) {
                 this.loading = true;
-                api.get('api/getPlanList',data).then((data) => {
+                api.get('Ftapi/getResList',data).then((data) => {
                     this.table_data = data.req.data.data.list;
                     this.total = data.req.data.data.total;
                 });
 
                 this.loading = false;
             },
-            reset(flag) {resets(flag,this);},
-            modify () {modifys('api/modifyRes',this);},
             getResetData(data) {
                 this.getSearchData(data);
             },
-            getType(type) {
-                switch (type) {
-                    case 1:
-                        return '大小';
-                    case 2:
-                        return '单双';
-                }
-            },
-            getRes(res) {
-                switch (res) {
-                	case 0:
-            			return '?';
-                    case 1:
-                        return '中';
-                    case 2:
-                        return '挂';
-                }
-            },
             getName(index,type) {
-            	switch (type) {
+            	switch (index) {
             		case 0:
             			return '?';
             		case 1:
-            			return index == 1 ? '小' : '大';
+            			return type == 1 ? '小' : '单';
             		case 2:
-            			return index == 2 ? '单' : '双';
+            			return type == 1 ? '大' : '双';
             	}
             },
+            modify () {modifys('Ftapi/modifyRes',this);},
             //打开模态
             openModifyModal(data) {
                 this.modifyModal.open = true;
                 this.modifyModal.formData = {
                     id: data.id,
-                    start_num: data.start_num,
-                    end_num: data.end_num,
-                    compare_issue:data.compare_issue,
+                    next_num: data.next_num,
+                    total_count: data.total_count,
+                    now_time:data.now_time + "",
+                    next_time:data.now_time + "",
                 };
             },
             
         },
         mounted () {
             this.getSearchData({pageSize:this.pageSize,page:1});
-        }
-        
+        },
     }
 </script>
