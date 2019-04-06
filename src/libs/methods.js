@@ -11,7 +11,6 @@ export const removeFiles = function (flag,self){
             self.addModal.formData.header = '';
             break;
         case 3:
-            console.log(self);
             self.modifyModal.formData.pic = '';
             break;
     }   

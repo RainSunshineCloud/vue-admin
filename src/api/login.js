@@ -17,10 +17,11 @@ class Login
     commonThen (req) {
         if (parseInt(req.status) == 200 && parseInt(req.data.code) == 200) {
             Message.success("登录成功");
-            return Promise.resolve({status:200,req});
+            return Promise.resolve(req);
         } else {
             Message.error(req.data.msg);
-            return Promise.reject(req);
+            return Promise.resolve(req);
+
         }   
     }
 

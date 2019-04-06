@@ -12,16 +12,15 @@ export default {
     useI18n: false,
 
     devApiConfig: {
-        baseURL: 'http://www.foxconn.com/admin',
+        baseURL: 'http://vm.blog.com/admin',
         timeout: 100000,
-        withCredentials: false,
-        // adapter: function (config){console.log(config);},
+        withCredentials: true,
         responseType: 'json',
     },
     proApiConfig : {
-        baseURL: 'http://www.foxconn.com/admin',
-        timeout: 3000,
-        withCredentials: false,
+        baseURL: 'http://vm.blog.com/admin',
+        timeout: 30000,
+        withCredentials: true,
         responseType: 'json',
     },
     /**
