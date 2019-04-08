@@ -12,13 +12,13 @@ export default {
     useI18n: false,
 
     devApiConfig: {
-        baseURL: 'http://vm.blog.com/admin',
+        baseURL: 'http://vm.myyaf.com/admin',
         timeout: 100000,
         withCredentials: true,
         responseType: 'json',
     },
     proApiConfig : {
-        baseURL: 'http://vm.blog.com/admin',
+        baseURL: 'http://vm.myyaf.com/admin',
         timeout: 30000,
         withCredentials: true,
         responseType: 'json',
@@ -26,5 +26,5 @@ export default {
     /**
     * @description 默认打开的首页的路由name值，默认为home
     */
-    homeName: 'api_index',
+    homeName: 'user_list',
 }

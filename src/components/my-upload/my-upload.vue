@@ -30,7 +30,6 @@
 </template>
 
 <script>
-
     export default {
         props:{
             pics: {
@@ -44,13 +43,15 @@
             	default:'200px',
             },
             flag: {
-                type:Number,
-                default: 1
-            }  
+                type:String
+            },
+            url: {
+                type:String
+            }
         },
         methods:{
             handleRemove () {
-                this.$emit('listenFileRemove');
+                this.$emit('listenFileRemove',this.flag);
             },
             handleFormatError (file) {
                 this.$Notice.warning({
@@ -67,7 +68,7 @@
             uploadFunc (file) {
                 let formData = new FormData();
                 formData.append('file',file);
-            	this.$emit('listenFileUpload',formData,this.flag);
+            	this.$emit('listenFileUpload',formData,this.flag,this.url);
             	return false;
             	
             }

@@ -16,6 +16,12 @@ export const getToken = () => {
     else return false
 }
 
+export const getHost = () => {
+    let tmp = config.apiConf.baseURL.trim('/').split('/');
+    tmp.pop();
+    return tmp.join('/') + '/';
+}
+
 export const hasChild = (item) => {
     return item.children && item.children.length !== 0
 }

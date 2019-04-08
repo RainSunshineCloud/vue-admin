@@ -16,7 +16,7 @@ class Api
     }
     commonThen (req) {
         if (parseInt(req.status) == 200 && parseInt(req.data.code) == 200) {
-            return Promise.resolve({status:1,req});
+            return Promise.resolve(req.data);
         } else {
             Message.error(req.data.msg);
             return Promise.reject(req);
@@ -43,7 +43,7 @@ class Api
         if (getToken() != res.headers.token) {
             if (res.headers.token && res.headers.token != '') {
                 setToken(res.headers.token);
-            } else {
+            } else if (process.env.NODE_ENV !== 'development') {
                 delToken();
                 window.location.href = "/#/login"
             }
