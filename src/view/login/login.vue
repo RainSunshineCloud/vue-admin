@@ -18,6 +18,7 @@
 import LoginForm from '@/components/login-form'
 import logins from '@/api/login.js'
 import config from '@/config';
+
 export default {
     components: {
         LoginForm,
@@ -35,8 +36,8 @@ export default {
                 } else {
                     this.reloadImg();
                 }
-                
             });
+
         },
         reloadImg () {
             this.picUrl = this.picUrl + '?a=' + Math.random();

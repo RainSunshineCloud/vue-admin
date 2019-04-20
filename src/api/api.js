@@ -26,6 +26,7 @@ class Api
     commonCatch (error) {
         return {
             then: () => {
+                return Promise.reject(req);
             }
         }
     }

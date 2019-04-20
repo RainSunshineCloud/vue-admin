@@ -64,13 +64,15 @@
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
     import MyUpload from '@/components/my-upload'
-    import {removeFiles,uploadFiles,resets,modifys,adds} from '@/libs/methods.js'
+    import modal from '@/mixin/modalMixin.js'
+    import upload from '@/mixin/uploadMixin.js'
     export default {
         name: 'api_index',
         components: {
             Tables,
             MyUpload
         },
+        mixins: [modal,upload],
         data () {
             return {
                 status_desc: {
@@ -220,7 +222,9 @@
             modify () {modifys('api/modifyConfig',this);},
             reset(flag) {resets(flag,this);},
             //文件上传
-            uploadFile (param,flag) { uploadFiles(param,flag,this);},
+            uploadFile (param,flag) {
+                uploadFiles(param,flag,this);
+            },
             removeFile (flag) {removeFiles(flag,this);}
         },
         mounted () {

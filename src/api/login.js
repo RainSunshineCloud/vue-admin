@@ -1,6 +1,6 @@
 import HttpRequest from '@/libs/axios'
 import config from '@/config'
-import {setToken} from '@/libs/util'
+import {setToken,setAuth} from '@/libs/util'
 import {Message} from 'iview'
 
 class Login

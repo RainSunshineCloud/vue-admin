@@ -132,11 +132,13 @@ export default {
     },
     watch: {
         '$route' (newRoute) {
+            console.log(newRoute);
             const { name, query, params, meta } = newRoute
             this.tagNavList = addTag(this.tagNavList,newRoute,{
                 route: { name, query, params, meta },
                 type: 'push'
             })
+
             this.breadCrumbList = getBreadCrumbList(newRoute,this.homeRoute)
             this.$refs.sideMenu.updateOpenName(newRoute.name)
         },

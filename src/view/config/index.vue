@@ -28,8 +28,8 @@
             </Form>
         </div>
         <div slot="footer">
-            <Button type="primary" @click="modify" :disabled="loading">修改</Button>
-            <Button type="default" @click="reset(1)" style="margin-left: 8px" :disabled="loading">返回</Button>
+            <Button type="primary" @click="modify('user/modifyOtherConfig','modifyModal')" :disabled="loading">修改</Button>
+            <Button type="default" @click="reset('modifyModal')" style="margin-left: 8px" :disabled="loading">返回</Button>
         </div>
     </Modal>
 </div>
@@ -38,9 +38,10 @@
     
     import Tables from '@/components/tables'
     import api from '@/api/api.js'
-    import {resets,modifys} from '@/libs/methods.js'
+    import modal from '@/mixin/modalMixin.js'
     export default {
         name: 'config_index',
+        mixins: [modal],
         components: {
             Tables
         },
@@ -82,6 +83,8 @@
                                     on: {
                                         click: () => {
                                             this.openModifyModal(params.row);
+                                            this.open('modifyModal',params.row,['name','desc','value']);
+
                                         }
                                     }
                                 }, '修改')
@@ -106,19 +109,6 @@
 
                 this.loading = false;
             },
-            getResetData(data){
-            },
-            //打开模态
-            openModifyModal(data) {
-                this.modifyModal.open = true;
-                this.modifyModal.formData = {
-                    name: data.name,
-                    desc: data.desc,
-                    value: data.value,
-                };
-            },
-            modify () { console.log(this.modifyModal.formData); modifys('api/modifyOtherConfig',this);},
-            reset(flag) {resets(flag,this);},
         },
         mounted () {
             this.getSearchData();

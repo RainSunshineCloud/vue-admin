@@ -26,14 +26,32 @@ const layouts = [
             component: () => import('@/view/login/login.vue')
         },
         {
-            path:'/',
-            type:'layout',
-            component: Layout,
-            props: {
-                userAvator:"图像"
+        	path: '/waiting',
+        	name: 'waiting',
+        	meta: {
+        		title: '请求中',
+        		hideInMenu:true,
+        	},
+        	component: () => import('@/view/loading/index.vue'),
+        },
+        {
+        	path: '/404',
+        	name: 'page404',
+        	meta: {
+        		title: '404',
+        		hideInMenu:true,
+        	},
+        	component: () => import('@/view/error/page404.vue'),
+        },
+        {
+            path: '/401',
+            name: 'page401',
+            meta: {
+                title: '401',
+                hideInMenu:true,
             },
-            children: Main,
-        }
+            component: () => import('@/view/error/page401.vue'),
+        },
 ];
 
 export default layouts;
