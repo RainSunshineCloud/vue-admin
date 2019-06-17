@@ -28,4 +28,6 @@ export default {
     */
     homeName: 'user_list',
     waitPageName: 'waiting',
+    notLoginCode: 600,
+    hasPermession:true,
 }

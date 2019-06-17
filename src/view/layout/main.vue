@@ -14,7 +14,8 @@
         <Layout>
             <Header class="header-con">
                 <header-bar :collapsed="collapsed" :breadCrumbList="breadCrumbList" @on-coll-change="handleCollapsedChange">
-                    <user :user-avator="userAvator"/>
+                    <user :user-avator="userAvator" :user-name="userName"/>
+                    <!-- <p>name</p> -->
                     <language v-if="$config.useI18n" @on-lang-change="setLocals" style="margin-right: 10px;" :lang="local"/>
                     <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
                 </header-bar>
@@ -41,8 +42,9 @@ import TagsNav from './components/tags-nav'
 import User from './components/user'
 import Fullscreen from './components/fullscreen'
 import Language from './components/language'
-import { getNewTagList, addTag,setTagNavList,setLocal,getNextRoute,delTagNavList, routeEqual,getMenuByRouter,getBreadCrumbList,getHomeRoute} from '@/libs/util'
+import { getNewTagList, addTag,setTagNavList,setLocal,getNextRoute,delTagNavList, routeEqual,getMenuByRouter,getBreadCrumbList,getHomeRoute,getlocalStorage} from '@/libs/util'
 import routers from '@/router/index'
+import global from '@/global.js'
 // import minLogo from '@/assets/images/logo-min.jpg'
 // import maxLogo from '@/assets/images/logo.jpg'
 import './main.less'
@@ -57,10 +59,6 @@ export default {
         User
     },
     props:{
-        userAvator : {
-            type:String,
-            default:""
-        },
         local:{
             type:String,
             default:"中文简体"
@@ -75,6 +73,8 @@ export default {
             // maxLogo,
             breadCrumbList:[],
             tagNavList:[],
+            userName:'',
+            userAvator:'',
             isFullscreen: false
         }
     },
@@ -111,7 +111,7 @@ export default {
         handleCloseTag (res, type, route) {
             if (type === 'all') {
                 this.turnToPage(this.$config.homeName)
-                this.tagNavList = [this.$homeRoute];
+                this.tagNavList = [global.get('homeRoute')];
                 this.tagNavList = delTagNavList(route.name,this.tagNavList,3)
             } else if (routeEqual(this.$route, route)) {
                 if (type !== 'others') {
@@ -132,7 +132,6 @@ export default {
     },
     watch: {
         '$route' (newRoute) {
-            console.log(newRoute);
             const { name, query, params, meta } = newRoute
             this.tagNavList = addTag(this.tagNavList,newRoute,{
                 route: { name, query, params, meta },
@@ -143,12 +142,14 @@ export default {
             this.$refs.sideMenu.updateOpenName(newRoute.name)
         },
         tagNavList (new_data) {
-            this.$tagNavList = new_data;
+            global.set('tagNavList',new_data) 
         }
     },
     mounted () {
-        this.homeRoute = this.$homeRoute;
-        this.tagNavList = this.$tagNavList;
+        let info = getlocalStorage('info');
+        this.userAvator = info.name || '';
+        this.homeRoute = global.get('homeRoute');
+        this.tagNavList =  global.get('tagNavList');
         this.tagNavList = addTag(this.tagNavList,this.$config.homeName,{
             route: this.homeRoute
         })

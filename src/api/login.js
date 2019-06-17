@@ -42,7 +42,8 @@ class Login
         }
     }
     cookieMiddle (intstance,url,res){
-        if (!!res.headers.token) {
+        if (res.data.code == 200 && !!res.headers.token) {
+            localStorage.setItem('info',JSON.stringify(res.data.data));
             setToken(res.headers.token);
         }
     }

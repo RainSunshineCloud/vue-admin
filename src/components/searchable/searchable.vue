@@ -49,6 +49,10 @@
                 }
 
             },
+            resetbtn: {
+                type:Boolean,
+                default: true,
+            },
             handleSearchFunc:{
                 type:Function
             }
@@ -67,14 +71,14 @@
                     tmp[key] = value;
                     if (length -1 == key) {
                         tmp[key].push({searchbtn:true,type:'btn'});
-                        tmp[key].push({resetbtn:true,type:'btn'});
+                        tmp[key].push({resetbtn:this.resetbtn,type:'btn'});
                     } else {
                         tmp[key].push({searchbtn:false,type:'btn'});
                         tmp[key].push({resetbtn:false,type:'btn'});
                     }
                 });
                 return tmp;
-            }
+            },
         },
         methods:{
             getSearchData(){

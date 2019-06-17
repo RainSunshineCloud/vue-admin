@@ -4,6 +4,7 @@
       <Avatar :src="userAvator"/>
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
+        <DropdownItem name="name">{{this.userName}}</DropdownItem>
         <DropdownItem name="logout">退出登录</DropdownItem>
       </DropdownMenu>
     </Dropdown>
@@ -19,6 +20,10 @@ export default {
     userAvator: {
       type: String,
       default: ''
+    },
+    userName: {
+      type:String,
+      default:'Admin'
     }
   },
   methods: {

@@ -32,6 +32,7 @@ export default {
         login_handle ({ moble, password, code}) {
             logins.post('passport/login',{ moble:moble, 'password':password,code}).then(res => {
                 if (res.data.code == 200) {
+
                     this.$router.push({name:this.$config.homeName});
                 } else {
                     this.reloadImg();

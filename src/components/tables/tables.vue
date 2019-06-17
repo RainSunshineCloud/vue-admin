@@ -2,7 +2,8 @@
     <div style="background:white;margin:2px;padding:20px;border-radius: 10px;">
         <Searchable 
             :cansearch='true' 
-            :searchField='searchField' 
+            :searchField='searchField'
+            :resetbtn="resetBtn"
             @listenSearchData='getSearchData'
             @listenResetData="getResetData"
         ></Searchable>
@@ -17,7 +18,7 @@
         <template>
             <Row justify="end" type="flex" style="padding-top: 8px">
                 <Col>
-                    <Page :total="total" :page-size="pageSize" :current="FormData.page" show-total @on-change="pageChange"/>
+                    <Page :total="total" :page-size="pageForm.pageSize" :current="pageForm.page" show-total @on-change="pageChange"/>
                 </Col>
             </Row>
         </template>
@@ -46,14 +47,24 @@ export default {
         },
         loading: {
             type:Boolean,
-            dedault: false,
+            default: false,
         },
-        total: {
-            type:Number
+        resetBtn: {
+            type:Boolean,
+            default: true,
         },
-        pageSize:{
+        total:{
             type:Number,
-            default:10,
+            default:0,
+        },
+        pageForm: {
+            type:Object,
+            default () {
+                return {
+                    page:1,
+                    pageSize:10,
+                }
+            }
         }
     },
     computed:{
@@ -64,36 +75,35 @@ export default {
     data () {
         return {
             searchValue: '',
-            FormData: {
-                "sort":undefined,
-                "search":undefined,
-                "page" : 1,
-                "pageSize":10,
-            },
+            formData : {
+                    "sort":undefined,
+                    "search":undefined,
+                    "page" : 1,
+                    "pageSize":10,
+                }
         }
     },
     methods: {
         sort (columns) {
             if (columns.order == 'normal') {
-                this.FormData.sort = '';
+                this.formData.sort = '';
             } else {
-                this.FormData.sort = columns.key + ' ' + columns.order;
+                this.formData.sort = columns.key + ' ' + columns.order;
             }
-            
-            this.$emit('listenFormData',this.FormData);
+            this.$emit('listenFormData',this.objFlat(this.formData));
         },
         getSearchData(data) {
-            this.FormData.search = this.rebuildData(data);
-            this.$emit('listenFormData',this.FormData);
+            this.formData.search = this.rebuildData(data);
+            this.$emit('listenFormData',this.objFlat(this.formData));
         },
         pageChange(page) {
-            this.FormData.page = page;
-            this.$emit('listenFormData',this.FormData);
+            this.formData.page = page;
+            this.$emit('listenFormData',this.objFlat(this.formData));
         },
         getResetData(data) {
-            this.FormData.page = 1;
-            this.FormData.search = this.rebuildData(data);
-            this.pageChange(1);
+            this.formData.page = 1;
+            this.formData.search = this.rebuildData(data);
+            this.$emit('listenResetFormData',this.objFlat(this.formData));
         },
         rebuildData(data) {
             for (let key in data) {
@@ -107,11 +117,19 @@ export default {
                 data = undefined;
             }
             return data;
-        }
+        },
+        objFlat (obj) {
+            var tmp = {};
+            for (let i in obj) {
+                if (obj[i] instanceof Object) {
+                    tmp = Object.assign(tmp,this.objFlat(obj[i]));
+                } else {
+                    tmp[i] = obj[i];
+                }
+            }
+            return tmp;
+        },
+
     },
-    mounted () {
-        this.FormData.pageSize = this.pageSize;
-        this.FormData.page = 1;
-    }
 }
 </script>

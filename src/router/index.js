@@ -26,6 +26,16 @@ const layouts = [
             component: () => import('@/view/login/login.vue')
         },
         {
+            path:'/',
+            type:'layout',
+            component: Layout,
+            props: {
+                userAvator:"图像",
+                userName:"Admin"
+            },
+            children: Main,
+        },
+        {
         	path: '/waiting',
         	name: 'waiting',
         	meta: {
@@ -53,5 +63,4 @@ const layouts = [
             component: () => import('@/view/error/page401.vue'),
         },
 ];
-
 export default layouts;

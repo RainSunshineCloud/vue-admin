@@ -18,18 +18,14 @@ class Api
         if (parseInt(req.status) == 200 && parseInt(req.data.code) == 200) {
             return Promise.resolve(req.data);
         } else {
-            return Promise.reject(req);
+           
+            return Promise.reject(req.data);
         }   
     }
 
     commonCatch (error) {
-        return {
-            then: () => {
-                if (error.message) {
-                    Message.error(error.message);
-                }
-            }
-        }
+        Message.error('未有权限');
+        return Promise.reject(error);
     }
 
     middles () {
@@ -50,5 +46,5 @@ class Api
         }
     }
 }
-let api = new Api();
+const api = new Api();
 export default api;

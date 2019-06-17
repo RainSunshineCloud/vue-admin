@@ -17,7 +17,6 @@ class HttpRequest
     	// 请求拦截
 	    instance.interceptors.request.use(config => {
 	      	for (let key in this.middles.req.success) {
-            
 	      		this.middles.req.success[key](instance,url,config);
 	      	}
 	      
@@ -44,7 +43,7 @@ class HttpRequest
   	}
   	
   	req (url,method,options) {
-  		options = options || {};
+  		options =options || {};
 	    const instance = axios.create()
 	    options = Object.assign({},this.getInsideConfig(), options,{url:url},{method:method})
 	    this.interceptors(instance, url)

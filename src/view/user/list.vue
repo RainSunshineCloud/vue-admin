@@ -97,8 +97,8 @@
     import {dateFormat} from '@/libs/tools'
     import Tables from '@/components/tables'
     import MyUpload from '@/components/my-upload'
-    import modal from '@/mixin/modalMixin.js'
-    import upload from '@/mixin/uploadMixin.js'
+    import modal from '@/mixin/modal.js'
+    import upload from '@/mixin/upload.js'
     import api from '@/api/api.js'
     export default {
         name: 'user_list',
@@ -209,6 +209,9 @@
 
                 this.loading = false;
             },
+            getResetData() {
+
+            }
         },
         mounted () {
             this.getSearchData();

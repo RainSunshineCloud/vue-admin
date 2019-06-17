@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import config from '@/config'
+import global from '@/global.js'
 import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 
 export const setToken = (token) => {
@@ -14,6 +15,34 @@ export const getToken = () => {
     const token = Cookies.get(config.cookieKey)
     if (token) return token
     else return false
+}
+export const getlocalStorage = (key) => {
+    const item = localStorage.getItem(key);
+    if (item) {
+        return JSON.parse(item);
+    }
+} 
+
+export const getPermession = (api,router,Permession,func) => {
+
+    var dynamicRoutes = global.get('dynamicRoutes')
+
+    if (dynamicRoutes.unRegister && config.hasPermession) {
+        dynamicRoutes.unRegister = false;
+        api.then((data) => {
+            dynamicRoutes.routes = getPermessionRouter(Permession,getPermessionFormat([{permession:true,name:'article_index'},{permession:true,name:'permession'}]));
+            if (dynamicRoutes.routes.length > 0) {
+                router.addRoutes(dynamicRoutes.routes);
+                router.options.routes.push(...dynamicRoutes.routes);
+                global.set('homeRoute',getHomeRoute(router.options.routes, config.homeName))
+                global.set('tagNavList',setTagNavList(global.get('homeRoute')))
+            }
+            global.set('dynamicRoutes',dynamicRoutes);
+            func(true);
+        }).catch(() => {
+            func(false);
+        });
+    }
 }
 
 export const getHost = () => {
@@ -38,7 +67,8 @@ const showThisMenuEle = (item, access) => {
  */
 export const getMenuByRouter = (list, access) => {
     let res = []
-    forEach(list, item => {
+    for (let i = 0; i < list.length;i++) {
+        let item = list[i];
         if (item.type && item.type == "layout") {
             res = res.concat(getMenuByRouter(item.children, access));
         }else if (!item.meta || (item.meta && !item.meta.hideInMenu)) {
@@ -53,8 +83,7 @@ export const getMenuByRouter = (list, access) => {
             if (item.meta && item.meta.href) obj.href = item.meta.href
             if (showThisMenuEle(item, access)) res.push(obj)
         }
-    })
-
+    }
     return res
 }
 
@@ -454,5 +483,31 @@ export const closePage = (tagNavList, route) => {
 }
 
 export const setLocal = (lang) => {
-            localSave('local', lang)
+    localSave('local', lang)
+}
+
+export const getPermessionRouter = (router, permession) => {
+    let arr = [];
+    router.forEach((item) => {
+        if (permession[item.name] && permession[item.name].permession) {
+            arr.push(item);
+            return;
         }
+        if (item.children) {
+            item.children = getPermessionRouter(item.children,permession);
+            if (item.children.length > 0) {
+                return arr.push(item);
+            }
+        } 
+        
+    });
+    return arr;
+}
+
+export const getPermessionFormat = (permession) => {
+    let res = {};
+    permession.forEach((item) => {
+        res[item.name] = item;
+    });
+    return res;
+}
